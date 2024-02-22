@@ -17,7 +17,7 @@ export default function ProductCard({ props }) {
   });
 
   return (
-    <Card className="">
+    <Card className="w-[98%] mx-auto">
       <CardHeader shadow={false} floated={false} className="h-96">
         <img
           src={props.images[0]}
