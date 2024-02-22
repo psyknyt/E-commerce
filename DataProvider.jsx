@@ -8,6 +8,7 @@ const defaultState = {
   categories: [],
   selectedProjectId: undefined,
   pageNumber: 1,
+  categoryVisib: false,
 };
 
 // data Reducer
@@ -37,13 +38,20 @@ const DataReducer = (state, action) => {
       pageNumber: state.pageNumber === 1 ? 1 : state.pageNumber - 1,
     };
   }
+  if (action.type === "setCategories") {
+    console.log("set categories");
+    return {
+      ...state,
+      categoryVisib: action.payload,
+    };
+  }
 };
 
 // data Provider Component
 const DataProvider = (props) => {
   const [data, setData] = useState([]);
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+
   const [productState, dispatchAction] = useReducer(DataReducer, defaultState);
 
   useEffect(() => {
@@ -69,10 +77,13 @@ const DataProvider = (props) => {
     dispatchAction({ type: "pagination", payload: value });
   };
   const nextPage = () => {
-    dispatchAction({ type: "nextPage", payload: "" });
+    dispatchAction({ type: "nextPage" });
   };
   const prevPage = () => {
-    dispatchAction({ type: "prevPage", payload: "" });
+    dispatchAction({ type: "prevPage" });
+  };
+  const setCategories = (value) => {
+    dispatchAction({ type: "setCategories", payload: value });
   };
 
   console.log("product state: ", productState);
@@ -86,6 +97,8 @@ const DataProvider = (props) => {
     nextPage: nextPage,
     prevPage: prevPage,
     setPage: pagination,
+    categoryVisib: productState.categoryVisib,
+    setCategories: setCategories,
   };
 
   return (

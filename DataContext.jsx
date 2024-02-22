@@ -10,4 +10,6 @@ export const DataContext = React.createContext({
   nextPage: () => {},
   prevPage: () => {},
   setPage: (value) => {},
+  categoryVisib: false,
+  setCategories: (value) => {},
 });

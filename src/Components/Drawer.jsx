@@ -12,29 +12,23 @@ import {
 import { DataContext } from "../../DataContext";
 
 export default function DrawerCategories({ text }) {
-  const [open, setOpen] = useState(false);
-  const openDrawer = () => setOpen(true);
-  const closeDrawer = () => setOpen(false);
-
-  const [categories, setCategories] = useState([]);
+  // const [open, setOpen] = useState(false);
 
   const ctx = useContext(DataContext);
 
-  useEffect(() => {
-    setCategories(ctx?.categories);
-    // console.log("product is: ", product);
-    console.log("categories are: ", categories);
-  }, [ctx.categories]);
+  const open = ctx.categoryVisib;
+
+  const closeDrawer = () => ctx.setCategories(false);
 
   return (
     <div className="flex items-center">
-      <button onClick={openDrawer}>{text}</button>
+      {/* <button onClick={openDrawer}>{text}</button> */}
       <Drawer
         open={open}
         onClose={closeDrawer}
         className="overflow-auto scrollbar-hide scroll-smooth snap-x"
       >
-        <div className=" flex items-center justify-between p-2">
+        <div className="flex items-center justify-between p-2">
           <Typography variant="h5" color="blue-gray">
             Product Categories
           </Typography>
@@ -56,7 +50,7 @@ export default function DrawerCategories({ text }) {
           </IconButton>
         </div>
         <List>
-          {categories.map((el, index) => (
+          {ctx.categories.map((el, index) => (
             <ListItem className="flex justify-between" key={index}>
               {el}
               <ListItemPrefix>

@@ -12,7 +12,7 @@ import "./App.css";
 function App() {
   const [product, setProduct] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [visibility, setVisibility] = useState(false);
+
   const ctx = useContext(DataContext);
 
   useEffect(() => {
@@ -28,11 +28,10 @@ function App() {
   };
   return (
     <>
-      <div className="w-full  h-screen  bg-cover bg-center bg-no-repeat flex justify-center bg-gradient-to-b from-blue-500 to-blue-300">
+      <div className="w-full  h-[60vh]  bg-cover bg-center bg-no-repeat flex justify-center bg-gradient-to-b from-blue-500 to-blue-300">
         <Navbar visibility={toggleVisibility} />
-        {visibility && (
-          <DrawerCategories text="categories" id="categoryDrawer" />
-        )}
+
+        <DrawerCategories text="categories" id="categoryDrawer" />
       </div>
       <ProductList products={product} />
       {/* <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-[90%] mx-auto bg-gradient-to-b from-blue-500 to-blue-300">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
 
@@ -7,10 +7,11 @@ import { open } from "../assets/svg";
 
 import DrawerCategories from "./Drawer";
 import "../App.css";
+import { DataContext } from "../../DataContext";
 
-export default function Navbar({ visibility }) {
+export default function Navbar() {
   // handling scroll for the navigation
-
+  const ctx = useContext(DataContext);
   window.addEventListener("scroll", function () {
     var navbar = document.getElementById("navbar");
     var btnSearch = document.getElementById("btn-search");
@@ -27,7 +28,10 @@ export default function Navbar({ visibility }) {
       btnSearch.classList.remove("hidden");
     }
   });
-
+  const openDrawer = () => {
+    console.log("categories set");
+    ctx.setCategories(true);
+  };
   return (
     <>
       <nav
@@ -83,9 +87,9 @@ export default function Navbar({ visibility }) {
         {/* Nav items */}
         <div className="ml-auto hidden lg:flex justify-around items-center">
           <span className="ml-3 sm:ml-6">Home</span>
-          <span className="ml-3 sm:ml-6 mr-5" onClick={visibility}>
+          <button className="ml-3 sm:ml-6 mr-5" onClick={openDrawer}>
             categories
-          </span>
+          </button>
 
           <div className="ml-auto sm:mr-5">
             <Typography
