@@ -1,28 +1,32 @@
+import React from "react";
+import { useState } from "react";
+import { Button, Input, Typography } from "@material-tailwind/react";
+
 import logo from "../assets/logo.png";
 import { open } from "../assets/svg";
-import { Button, Input, Typography } from "@material-tailwind/react";
-import { useState } from "react";
 
+import DrawerCategories from "./Drawer";
 import "../App.css";
 
-import React from "react";
-
-export default function Navbar() {
+export default function Navbar({ visibility }) {
   // handling scroll for the navigation
 
   window.addEventListener("scroll", function () {
     var navbar = document.getElementById("navbar");
+    var btnSearch = document.getElementById("btn-search");
+
+    // console.log(window.scrollY, y);
 
     if (window.scrollY > 0) {
       navbar.classList.remove("bg-white");
       navbar.classList.add("blur-nav");
+      btnSearch.classList.add("hidden");
     } else {
       navbar.classList.remove("blur-nav");
       navbar.classList.add("bg-white");
+      btnSearch.classList.remove("hidden");
     }
   });
-
-  const [openNav, setOpenNav] = useState(false);
 
   return (
     <>
@@ -37,13 +41,10 @@ export default function Navbar() {
         />
         {/* search Bar */}
         <div className="hidden md:flex flex-col gap-x-2 sm:flex-row sm:items-center">
-          <div className="relative w-full gap-2 md:w-[50%] mx-auto">
+          <div className="relative w-full gap-2 md:w-[50%] mx-auto z-0">
             <Input
               type="search"
               placeholder="Search"
-              containerProps={{
-                className: "min-w-[288px]",
-              }}
               className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -71,14 +72,21 @@ export default function Navbar() {
               </svg>
             </div>
           </div>
-          <Button size="md" className="mt-1 rounded-lg sm:mt-0 bg-black">
+          <Button
+            size="md"
+            id="btn-search"
+            className="z-1 mt-1 rounded-lg sm:mt-0 bg-black "
+          >
             Search
           </Button>
         </div>
         {/* Nav items */}
         <div className="ml-auto hidden lg:flex justify-around items-center">
           <span className="ml-3 sm:ml-6">Home</span>
-          <span className="ml-3 sm:ml-6 mr-5">Categories</span>
+          <span className="ml-3 sm:ml-6 mr-5" onClick={visibility}>
+            categories
+          </span>
+
           <div className="ml-auto sm:mr-5">
             <Typography
               as="li"

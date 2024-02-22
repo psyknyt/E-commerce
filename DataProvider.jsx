@@ -1,32 +1,95 @@
 // DataProvider.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { DataContext } from "./DataContext";
 
+const defaultState = {
+  data: [],
+  products: [],
+  categories: [],
+  selectedProjectId: undefined,
+  pageNumber: 1,
+};
+
+// data Reducer
+const DataReducer = (state, action) => {
+  console.log("state is: ", state);
+  if (action.type === "pagination") {
+    console.log("payload: ", action.payload);
+    return {
+      ...state,
+      pageNumber: action.payload,
+    };
+  }
+  if (action.type === "nextPage") {
+    console.log("next Page: ", state.pageNumber);
+    if (state.products) {
+      console.log("true and page is: ", state.pageNumber);
+    }
+    return {
+      ...state,
+      pageNumber: state.pageNumber === 5 ? 5 : state.pageNumber + 1,
+    };
+  }
+  if (action.type === "prevPage") {
+    console.log("next Page: ", state.pageNumber);
+    return {
+      ...state,
+      pageNumber: state.pageNumber === 1 ? 1 : state.pageNumber - 1,
+    };
+  }
+};
+
+// data Provider Component
 const DataProvider = (props) => {
   const [data, setData] = useState([]);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [productState, dispatchAction] = useReducer(DataReducer, defaultState);
 
   useEffect(() => {
-    // for products
-    fetch("https://dummyjson.com/products/?limit=100&delay=2")
+    fetch(`https://dummyjson.com/products/?limit=100`)
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error("Error fetching data:", error));
 
-    // console.log(data);
-  }, []);
-  useEffect(() => {
-    // for categories
-    fetch("https://dummyjson.com/products/?limit=30&delay=2")
+    fetch(`https://dummyjson.com/products/?limit=100`)
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => (productState.products = data.products))
       .catch((error) => console.error("Error fetching data:", error));
 
-    // console.log(data);
+    console.log("data for : ", productState.pageNumber, data);
+
+    fetch("https://dummyjson.com/products/categories")
+      .then((response) => response.json())
+      .then((data) => (productState.categories = data))
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
+
+  const pagination = (value) => {
+    dispatchAction({ type: "pagination", payload: value });
+  };
+  const nextPage = () => {
+    dispatchAction({ type: "nextPage", payload: "" });
+  };
+  const prevPage = () => {
+    dispatchAction({ type: "prevPage", payload: "" });
+  };
+
+  console.log("product state: ", productState);
+
+  const res = {
+    data: data,
+    products: productState.products,
+    categories: productState.categories,
+    pageNumber: productState.pageNumber,
+    pagination: pagination,
+    nextPage: nextPage,
+    prevPage: prevPage,
+    setPage: pagination,
+  };
 
   return (
-    <DataContext.Provider value={data}>{props.children}</DataContext.Provider>
+    <DataContext.Provider value={res}>{props.children}</DataContext.Provider>
   );
 };
 

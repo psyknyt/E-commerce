@@ -8,7 +8,14 @@ import {
 } from "@material-tailwind/react";
 
 export default function ProductCard({ props }) {
-  console.log(props);
+  // console.log(props);
+  const price = props.price * 84;
+  const formattedPrice = price.toLocaleString("en-IN", {
+    maximumFractionDigits: 2,
+    style: "currency",
+    currency: "INR",
+  });
+
   return (
     <Card className="">
       <CardHeader shadow={false} floated={false} className="h-96">
@@ -24,7 +31,7 @@ export default function ProductCard({ props }) {
             {props.brand}
           </Typography>
           <Typography color="blue-gray" className="font-medium">
-            ₹{props.price * 84}.00
+            {formattedPrice}
           </Typography>
         </div>
         <Typography
