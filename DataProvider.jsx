@@ -79,7 +79,7 @@ const DataProvider = (props) => {
 
   const res = {
     data: data,
-    products: productState.products,
+    products: productState.data?.products,
     categories: productState.categories,
     pageNumber: productState.pageNumber,
     pagination: pagination,
