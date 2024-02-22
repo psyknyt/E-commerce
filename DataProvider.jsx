@@ -54,7 +54,7 @@ const DataProvider = (props) => {
 
     fetch(`https://dummyjson.com/products/?limit=100`)
       .then((response) => response.json())
-      .then((data) => (productState.products = data.products))
+      .then((data) => setProducts(data.products))
       .catch((error) => console.error("Error fetching data:", error));
 
     console.log("data for : ", productState.pageNumber, data);
@@ -79,7 +79,7 @@ const DataProvider = (props) => {
 
   const res = {
     data: data,
-    products: productState.data?.products,
+    products: products,
     categories: productState.categories,
     pageNumber: productState.pageNumber,
     pagination: pagination,
