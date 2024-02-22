@@ -36,7 +36,7 @@ export default function Navbar() {
     <>
       <nav
         id="navbar"
-        className="z-50 fixed flex justify-between w-[90%] h-[60px] mx-auto  my-2 px-0 py-4 top-0 items-center md:justify-start  text-black font-openSans text-[12px] sm:text-[16px] md:text-[14px] rounded-full  bg-white hover:text-black "
+        className="z-50 fixed flex justify-between w-[85%] sm:w-[90%] h-[60px] mx-auto  my-2 px-0 py-4 top-0 items-center md:justify-start  text-black font-openSans text-[12px] sm:text-[16px] md:text-[14px] rounded-full  bg-white hover:text-black "
       >
         <img
           src={logo}
