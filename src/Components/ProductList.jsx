@@ -4,7 +4,7 @@ import { DataContext } from "../../DataContext";
 import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
 
-const ProductList = memo(() => {
+const ProductList = memo(({ products }) => {
   const [visib, setVisibility] = useState(false);
   const [productList, setProduct] = useState(undefined);
 
@@ -25,13 +25,13 @@ const ProductList = memo(() => {
   const endIndex = startIndex + itemsPerPage;
 
   // Slice product list based on current page and items per page
-  const productsToShow = productList?.slice(startIndex, endIndex);
+  const productsToShow = products?.slice(startIndex, endIndex);
 
   return (
     <div>
       {/* Render products */}
       <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-[90%] sm:w-full  bg-gradient-to-b from-blue-500 to-blue-300  pb-10 p-5">
-        {productList &&
+        {products &&
           productsToShow?.map((product, index) => (
             <ProductCard props={product} key={index} />
           ))}
