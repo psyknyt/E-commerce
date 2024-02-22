@@ -6,7 +6,7 @@ import { DataContext } from "../../DataContext";
 
 const Pagination = memo(() => {
   const ctx = useContext(DataContext);
-  console.log(ctx);
+  // console.log(ctx);
   // const [active, setActive] = useState(1);
   // ctx.pagination(active);
 

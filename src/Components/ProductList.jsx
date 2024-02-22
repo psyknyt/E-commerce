@@ -18,7 +18,6 @@ const ProductList = memo(() => {
     if (ctx?.products) {
       setProduct(ctx.products);
       console.log("type of product list is: ", typeof productList);
-      console.log();
     }
   }, [ctx.products]);
   // Calculate start and end index of products to display
@@ -31,7 +30,7 @@ const ProductList = memo(() => {
   return (
     <div>
       {/* Render products */}
-      <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-[90%] mx-auto bg-gradient-to-b from-blue-500 to-blue-300">
+      <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-[90%] sm:w-full  bg-gradient-to-b from-blue-500 to-blue-300  pb-10 p-5">
         {productList &&
           productsToShow?.map((product, index) => (
             <ProductCard props={product} key={index} />
