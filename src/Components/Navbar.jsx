@@ -30,7 +30,7 @@ export default function Navbar() {
   });
   const openDrawer = () => {
     console.log("categories set");
-    ctx.setCategories(true);
+    ctx.setDrawerVisib(true);
   };
   return (
     <>
@@ -79,7 +79,7 @@ export default function Navbar() {
           <Button
             size="md"
             id="btn-search"
-            className="z-1 mt-1 rounded-lg sm:mt-0 bg-black "
+            className="z-1 mt-1 rounded-lg sm:mt-0 bg-black"
           >
             Search
           </Button>

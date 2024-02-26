@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     if (ctx.data?.products) {
       setProduct(ctx.data.products);
-      console.log("product updated: ", product);
+      // console.log("product updated: ", product);
     }
     setCategories(ctx.categories);
   }, [ctx.data]);
@@ -36,7 +36,7 @@ function App() {
             Shop whatever you want to, and You can pay later...🥳
           </div>
           <div className="text-[12px] mx-auto w-[50%] text-center my-3">
-            We are still under building...
+            We are still under build...
           </div>
           <div className="mx-auto flex justify-around">
             <a
@@ -62,11 +62,7 @@ function App() {
         <DrawerCategories text="categories" id="categoryDrawer" />
       </div>
       <ProductList products={product} />
-      {/* <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-[90%] mx-auto bg-gradient-to-b from-blue-500 to-blue-300">
-        {product?.length > 0 &&
-          product.map((el, i) => <ProductCard props={el} key={i} />)}
-      </div> */}
-      {/* <Pagination /> */}
+      <Pagination />
     </>
   );
 }

@@ -2,52 +2,52 @@ import React, { useState, useContext, memo, useEffect } from "react";
 
 import { DataContext } from "../../DataContext";
 import ProductCard from "./ProductCard";
-import Pagination from "./Pagination";
+
+import { Spinner, Button } from "@material-tailwind/react";
 
 const ProductList = memo(({ products }) => {
-  const [visib, setVisibility] = useState(false);
-  const [productList, setProduct] = useState(undefined);
-
-  // const [currentPage, setCurrentPage] = useState(1);
   const ctx = useContext(DataContext);
   const currentPage = ctx.pageNumber;
 
   const itemsPerPage = 20;
-  // const productList = ctx?.products;s
-  useEffect(() => {
-    if (ctx?.products) {
-      setProduct(ctx.products);
-      console.log("type of product list is: ", typeof productList);
-    }
-  }, [ctx.products]);
-  // Calculate start and end index of products to display
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
+  let productsToShow = products?.slice(startIndex, endIndex);
   // Slice product list based on current page and items per page
-  const productsToShow = products?.slice(startIndex, endIndex);
+
+  const filterProducts = products.filter((product) => {
+    // Check if the product's category matches any of the selected categories
+    return ctx.selectedCategories.includes(product.category);
+  });
+  if (filterProducts.length > 0) {
+    productsToShow = filterProducts?.slice(startIndex, endIndex);
+  }
 
   return (
     <div>
       {/* Render products */}
-      <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-full mx-auto bg-gradient-to-b from-blue-500 to-blue-300  pb-10 p-5">
-        {products &&
-          productsToShow?.map((product, index) => (
+      {products.length === 0 && (
+        <div className="w-full flex justify-center items-center bg-gradient-to-b   pb-10 p-5 text-white text-3xl">
+          <Button
+            loading={true}
+            variant="text"
+            className="text-black font-bold"
+          >
+            Loading
+          </Button>
+        </div>
+      )}
+      {products.length > 0 && (
+        <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-full mx-auto bg-gradient-to-b from-blue-500 to-blue-300  pb-10 p-5">
+          {productsToShow?.map((product, index) => (
             <ProductCard props={product} key={index} />
           ))}
-      </div>
+        </div>
+      )}
 
       {/* Pagination controls */}
-      <Pagination />
-      {/* <div>
-        <button onClick={prevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>Page {currentPage}</span>
-        <button onClick={nextPage} disabled={endIndex >= productList.length}>
-          Next
-        </button>
-      </div> */}
     </div>
   );
 });

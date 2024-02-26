@@ -6,43 +6,86 @@ const defaultState = {
   data: [],
   products: [],
   categories: [],
+  selectedCategories: [],
+  wishlist: [],
   selectedProjectId: undefined,
   pageNumber: 1,
-  categoryVisib: false,
+  drawerVisib: false,
 };
 
 // data Reducer
 const DataReducer = (state, action) => {
-  console.log("state is: ", state);
   if (action.type === "pagination") {
-    console.log("payload: ", action.payload);
     return {
       ...state,
       pageNumber: action.payload,
     };
   }
   if (action.type === "nextPage") {
-    console.log("next Page: ", state.pageNumber);
-    if (state.products) {
-      console.log("true and page is: ", state.pageNumber);
-    }
     return {
       ...state,
-      pageNumber: state.pageNumber === 5 ? 5 : state.pageNumber + 1,
+      pageNumber: state.pageNumber + 1,
     };
   }
   if (action.type === "prevPage") {
-    console.log("next Page: ", state.pageNumber);
     return {
       ...state,
-      pageNumber: state.pageNumber === 1 ? 1 : state.pageNumber - 1,
+      pageNumber: state.pageNumber - 1,
+    };
+  }
+  if (action.type === "setProducts") {
+    return {
+      ...state,
+      products: action.payload,
+    };
+  }
+  if (action.type === "setData") {
+    return {
+      ...state,
+      data: action.payload,
     };
   }
   if (action.type === "setCategories") {
-    console.log("set categories");
     return {
       ...state,
-      categoryVisib: action.payload,
+      drawerVisib: action.payload,
+    };
+  }
+  if (action.type === "categoryFilter") {
+    const updatedCategoriesSet = new Set(state.selectedCategories);
+
+    // Add the new category to the Set
+    if (action.payload.ev.target.checked) {
+      updatedCategoriesSet.add(action.payload.category);
+    } else {
+      updatedCategoriesSet.delete(action.payload.category);
+    }
+    // Convert Set back to an array
+    const updatedSelectedCategories = Array.from(updatedCategoriesSet);
+
+    return {
+      ...state,
+      selectedCategories: updatedSelectedCategories,
+    };
+  }
+  if (action.type === "handle-wishlist") {
+    const updatedWishlistSet = new Set(state.wishlist);
+
+    if (action.payload.ev.target.checked) {
+      updatedWishlistSet.add(
+        state.products.find((el) => el.id === action.payload.id)
+      );
+    } else {
+      updatedWishlistSet.delete(
+        state.products.find((el) => el.id === action.payload.id)
+      );
+    }
+
+    const updatedWishlistArray = Array.from(updatedWishlistSet);
+
+    return {
+      ...state,
+      wishlist: updatedWishlistArray,
     };
   }
 };
@@ -57,15 +100,19 @@ const DataProvider = (props) => {
   useEffect(() => {
     fetch(`https://dummyjson.com/products/?limit=100`)
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        setData(data);
+        dispatchAction({ type: "setData", payload: data });
+      })
       .catch((error) => console.error("Error fetching data:", error));
 
     fetch(`https://dummyjson.com/products/?limit=100`)
       .then((response) => response.json())
-      .then((data) => setProducts(data.products))
+      .then((data) => {
+        setProducts(data.products);
+        dispatchAction({ type: "setProducts", payload: data.products });
+      })
       .catch((error) => console.error("Error fetching data:", error));
-
-    console.log("data for : ", productState.pageNumber, data);
 
     fetch("https://dummyjson.com/products/categories")
       .then((response) => response.json())
@@ -82,23 +129,31 @@ const DataProvider = (props) => {
   const prevPage = () => {
     dispatchAction({ type: "prevPage" });
   };
-  const setCategories = (value) => {
+  const setDrawerVisib = (value) => {
     dispatchAction({ type: "setCategories", payload: value });
   };
-
-  console.log("product state: ", productState);
+  const handleCategoryFilter = (ev, category) => {
+    dispatchAction({ type: "categoryFilter", payload: { ev, category } });
+  };
+  const handleWishlist = (ev, id) => {
+    dispatchAction({ type: "handle-wishlist", payload: { ev, id } });
+  };
 
   const res = {
     data: data,
     products: products,
     categories: productState.categories,
+    wishlist: productState.wishlist,
+    selectedCategories: productState.selectedCategories,
     pageNumber: productState.pageNumber,
     pagination: pagination,
     nextPage: nextPage,
     prevPage: prevPage,
     setPage: pagination,
-    categoryVisib: productState.categoryVisib,
-    setCategories: setCategories,
+    drawerVisib: productState.drawerVisib,
+    setDrawerVisib: setDrawerVisib,
+    handleCategoryFilter: handleCategoryFilter,
+    handleWishlist: handleWishlist,
   };
 
   return (

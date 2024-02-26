@@ -16,9 +16,9 @@ export default function DrawerCategories({ text }) {
 
   const ctx = useContext(DataContext);
 
-  const open = ctx.categoryVisib;
+  const open = ctx.drawerVisib;
 
-  const closeDrawer = () => ctx.setCategories(false);
+  const closeDrawer = () => ctx.setDrawerVisib(false);
 
   return (
     <div className="flex items-center">
@@ -54,7 +54,10 @@ export default function DrawerCategories({ text }) {
             <ListItem className="flex justify-between" key={index}>
               {el}
               <ListItemPrefix>
-                <Checkbox color="blue" />
+                <Checkbox
+                  color="blue"
+                  onChange={(e) => ctx.handleCategoryFilter(e, el)}
+                />
               </ListItemPrefix>
             </ListItem>
           ))}
