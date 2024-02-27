@@ -17,7 +17,7 @@ export default function Categories() {
       <div className="flex justify-center text-4xl font-bold text-white py-5">
         Showing for Categories..
       </div>
-      <div className="flex justify-evenly gap-4 my-4 mx-auto py-5 overflow-x-auto">
+      <div className="flex  gap-4 my-4 mx-auto py-5 overflow-x-auto">
         {ctx.selectedCategories.map((el, index) => (
           <CategroyButton props={el} key={index} />
         ))}
