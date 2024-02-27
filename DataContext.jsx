@@ -7,6 +7,7 @@ export const DataContext = React.createContext({
   categories: [],
   selectedCategories: [],
   wishlist: [],
+  cart: [],
   selectedProduct: null,
   pageNumber: 1,
   nextPage: () => {},
@@ -16,4 +17,5 @@ export const DataContext = React.createContext({
   setDrawerVisib: (value) => {},
   handleCategoryFilter: (event, category) => {},
   setWishlist: (ev, id) => {},
+  addToCart: (id) => {},
 });

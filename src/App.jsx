@@ -9,6 +9,8 @@ import ProductList from "./Components/ProductList";
 import DrawerCategories from "./Components/Drawer";
 import "./App.css";
 
+import Categories from "./Components/Categories";
+
 function App() {
   const [product, setProduct] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -26,6 +28,9 @@ function App() {
   const toggleVisibility = () => {
     setVisibility(!visibility);
   };
+
+  console.log(ctx);
+
   return (
     <>
       <div className="w-full  h-screen sm:h-[80vh]  bg-cover bg-center bg-no-repeat flex content-center justify-center bg-gradient-to-b from-blue-500 to-blue-300">
@@ -61,8 +66,14 @@ function App() {
         </div>
         <DrawerCategories text="categories" id="categoryDrawer" />
       </div>
-      <ProductList products={product} />
-      <Pagination />
+
+      {ctx.selectedCategories?.length === 0 && (
+        <ProductList products={product} />
+      )}
+
+      {ctx.selectedCategories?.length === 0 && <Pagination />}
+
+      {ctx.selectedCategories?.length > 0 && <Categories />}
     </>
   );
 }

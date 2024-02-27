@@ -6,8 +6,11 @@ import {
   Typography,
   Button,
   Rating,
-  Tooltip,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
 } from "@material-tailwind/react";
+
 import { complex } from "framer-motion";
 
 import { DataContext } from "../../DataContext";
@@ -31,9 +34,9 @@ export default function ProductCard({ props }) {
   });
 
   const ctx = useContext(DataContext);
-  // console.log(ctx.wishlist);
+
   return (
-    <Card className="w-[98%]  mx-auto">
+    <Card className="w-[98%]  mx-auto hover:bg-blue-100 hover:text-white">
       <CardHeader shadow={false} floated={false} className="h-64">
         <img
           src={props.images[0]}
@@ -63,7 +66,7 @@ export default function ProductCard({ props }) {
         <Typography
           variant="small"
           color="black"
-          className="font-normal opacity-75"
+          className="font-normal opacity-75 truncate"
         >
           {props.description}
         </Typography>
@@ -72,32 +75,38 @@ export default function ProductCard({ props }) {
             <Rating value={Math.floor(props.rating)} readonly />
             {props.rating}
           </div>
+
           <div className="relative inline-flex items-center gap-2">
-            <input
-              type="checkbox"
-              className="absolute opacity-0 w-6 h-6"
-              onChange={(ev) => ctx.handleWishlist(ev, props.id)}
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill={
-                ctx.wishlist.find((el) => el.id === props.id)
-                  ? "#D24545"
-                  : "none"
-              }
-              viewBox="0 0 24 24"
-              strokeWidth={
-                ctx.wishlist.find((el) => el.id === props.id) ? 0.2 : 0.8
-              }
-              stroke="currentColor"
-              className="z-1 w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
-            </svg>
+            <Popover>
+              <PopoverHandler>
+                <input
+                  type="checkbox"
+                  className="absolute opacity-0 w-6 h-6"
+                  onChange={(ev) => ctx.handleWishlist(ev, props.id)}
+                />
+              </PopoverHandler>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={
+                  ctx.wishlist.find((el) => el.id === props.id)
+                    ? "#D24545"
+                    : "#FCF5ED"
+                }
+                viewBox="0 0 24 24"
+                strokeWidth={
+                  ctx.wishlist.find((el) => el.id === props.id) ? 0.2 : 0.8
+                }
+                stroke="currentColor"
+                className="z-1 w-6 h-6 transition ease-in-out"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+              <PopoverContent>Added to wishlist</PopoverContent>
+            </Popover>
           </div>
         </div>
       </CardBody>

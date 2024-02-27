@@ -8,6 +8,7 @@ const defaultState = {
   categories: [],
   selectedCategories: [],
   wishlist: [],
+  cart: [],
   selectedProjectId: undefined,
   pageNumber: 1,
   drawerVisib: false,
@@ -39,13 +40,19 @@ const DataReducer = (state, action) => {
       products: action.payload,
     };
   }
+  if (action.type === "setCategories") {
+    return {
+      ...state,
+      categories: action.payload,
+    };
+  }
   if (action.type === "setData") {
     return {
       ...state,
       data: action.payload,
     };
   }
-  if (action.type === "setCategories") {
+  if (action.type === "setDrawerVisibility") {
     return {
       ...state,
       drawerVisib: action.payload,
@@ -88,6 +95,12 @@ const DataReducer = (state, action) => {
       wishlist: updatedWishlistArray,
     };
   }
+  if (action.type === "addToCart") {
+    return {
+      ...state,
+      cart: [...state.cart, action.payload],
+    };
+  }
 };
 
 // data Provider Component
@@ -116,7 +129,13 @@ const DataProvider = (props) => {
 
     fetch("https://dummyjson.com/products/categories")
       .then((response) => response.json())
-      .then((data) => (productState.categories = data))
+      .then((data) => {
+        productState.categories = data;
+        dispatchAction({
+          type: "setCategories",
+          payload: productState.categories,
+        });
+      })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
@@ -130,7 +149,7 @@ const DataProvider = (props) => {
     dispatchAction({ type: "prevPage" });
   };
   const setDrawerVisib = (value) => {
-    dispatchAction({ type: "setCategories", payload: value });
+    dispatchAction({ type: "setDrawerVisibility", payload: value });
   };
   const handleCategoryFilter = (ev, category) => {
     dispatchAction({ type: "categoryFilter", payload: { ev, category } });
@@ -138,7 +157,9 @@ const DataProvider = (props) => {
   const handleWishlist = (ev, id) => {
     dispatchAction({ type: "handle-wishlist", payload: { ev, id } });
   };
-
+  const addToCart = (id) => {
+    dispatchAction({ type: "addToCart", payload: id });
+  };
   const res = {
     data: data,
     products: products,
@@ -154,6 +175,7 @@ const DataProvider = (props) => {
     setDrawerVisib: setDrawerVisib,
     handleCategoryFilter: handleCategoryFilter,
     handleWishlist: handleWishlist,
+    addToCart: addToCart,
   };
 
   return (

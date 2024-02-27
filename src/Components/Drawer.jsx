@@ -20,6 +20,11 @@ export default function DrawerCategories({ text }) {
 
   const closeDrawer = () => ctx.setDrawerVisib(false);
 
+  // console.log(
+  //   ctx.selectedCategories.includes(props.category) ? true : false,
+  //   props.category
+  // );
+
   return (
     <div className="flex items-center">
       {/* <button onClick={openDrawer}>{text}</button> */}
@@ -56,6 +61,7 @@ export default function DrawerCategories({ text }) {
               <ListItemPrefix>
                 <Checkbox
                   color="blue"
+                  checked={ctx.selectedCategories.includes(el) ? true : false}
                   onChange={(e) => ctx.handleCategoryFilter(e, el)}
                 />
               </ListItemPrefix>
