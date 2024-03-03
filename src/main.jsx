@@ -69,7 +69,9 @@ import Header from "./Components/Header.jsx";
 //   )
 // );
 
-const router = createBrowserRouter([{ path: "*", Component: App }]);
+const router = createBrowserRouter([
+  { path: "*", Component: App, errorElement: <ErrorPage /> },
+]);
 
 createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
