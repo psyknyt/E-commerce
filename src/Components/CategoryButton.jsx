@@ -3,6 +3,7 @@ import { DataContext } from "../../DataContext";
 
 export default function CategroyButton({ props }) {
   const ctx = useContext(DataContext);
+
   return (
     <div className="flex justify-between rounded-xl pr-5 pl-2 py-auto bg-white hover:bg-blue-500 hover:text-white">
       <div className="flex flex-1 py-2 gap-2 justify-center items-center">

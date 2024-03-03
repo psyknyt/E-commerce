@@ -11,10 +11,13 @@ import {
   PopoverContent,
 } from "@material-tailwind/react";
 
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+
 import { complex } from "framer-motion";
 
 import { DataContext } from "../../DataContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductCard({ props }) {
   // console.log(props);
@@ -35,9 +38,16 @@ export default function ProductCard({ props }) {
 
   const ctx = useContext(DataContext);
 
+  const profileMenuItems = [
+    {
+      label: "My Cart",
+      icon: ShoppingCartIcon,
+    },
+  ];
+
   return (
-    <Card className="w-[98%]  mx-auto hover:bg-blue-100 hover:text-white">
-      <CardHeader shadow={false} floated={false} className="h-64">
+    <Card className="w-[98%]  mx-auto hover:bg-gray-200 hover:text-white">
+      <CardHeader shadow={false} floated={false} className="h-64 ">
         <img
           src={props.images[0]}
           alt="card-image"
@@ -45,13 +55,18 @@ export default function ProductCard({ props }) {
         />
       </CardHeader>
       <CardBody className="">
+        {/* brand name and price */}
         <div className="mb-2 flex items-center justify-between">
-          <Typography color="blue-gray" variant="lead" className="font-bold">
+          <Typography
+            color="blue-gray"
+            variant="lead"
+            className="font-bold truncate uppercase"
+          >
             {props.brand}
           </Typography>
           <div className="relative  px-5">
             <Typography
-              color="blue-gray"
+              color="green"
               variant="small"
               className="absolute font-bold bottom-5 mx-auto left-[23px]"
             >
@@ -63,6 +78,7 @@ export default function ProductCard({ props }) {
             </Typography>
           </div>
         </div>
+        {/* product description */}
         <Typography
           variant="small"
           color="black"
@@ -70,13 +86,14 @@ export default function ProductCard({ props }) {
         >
           {props.description}
         </Typography>
+        {/* product rating and wish-list*/}
         <div className="flex items-center justify-between content-center gap-2 mt-2 text-blue-gray-500">
           <div className="flex items-center gap-2">
             <Rating value={Math.floor(props.rating)} readonly />
             {props.rating}
           </div>
 
-          <div className="relative inline-flex items-center gap-2">
+          <div className="relative inline-flex items-center gap-2 ">
             <Popover>
               <PopoverHandler>
                 <input
@@ -114,9 +131,11 @@ export default function ProductCard({ props }) {
         {/* <Typography color="blue-gray" className="font-medium">
           {props.rating}
         </Typography> */}
+
         <Button
           ripple={false}
           fullWidth={true}
+          onClick={() => ctx.addToCart(props.id)}
           className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
         >
           Add to Cart

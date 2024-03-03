@@ -1,6 +1,7 @@
 // DataProvider.js
 import React, { useState, useEffect, useReducer } from "react";
 import { DataContext } from "./DataContext";
+import { redirect } from "react-router-dom";
 
 const defaultState = {
   data: [],
@@ -96,9 +97,25 @@ const DataReducer = (state, action) => {
     };
   }
   if (action.type === "addToCart") {
+    // searching new product from the list of products..
+    const newProduct = state.products.find(
+      (product) => product.id === action.payload
+    );
+
+    if (state.cart.find((product) => product.id === newProduct.id)) {
+      state.cart.find((product) => product.id === newProduct.id).quantity += 1;
+      console.log("same");
+      return {
+        ...state,
+      };
+    } else {
+      newProduct.quantity = 1;
+      console.log("not same");
+    }
+
     return {
       ...state,
-      cart: [...state.cart, action.payload],
+      cart: [...state.cart, newProduct],
     };
   }
 };
@@ -160,11 +177,13 @@ const DataProvider = (props) => {
   const addToCart = (id) => {
     dispatchAction({ type: "addToCart", payload: id });
   };
+
   const res = {
     data: data,
     products: products,
     categories: productState.categories,
     wishlist: productState.wishlist,
+    cart: productState.cart,
     selectedCategories: productState.selectedCategories,
     pageNumber: productState.pageNumber,
     pagination: pagination,

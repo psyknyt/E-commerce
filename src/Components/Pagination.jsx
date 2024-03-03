@@ -3,6 +3,7 @@ import { Button, IconButton, Tooltip } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 import { DataContext } from "../../DataContext";
+import { Link } from "react-router-dom";
 
 const Pagination = memo(() => {
   const ctx = useContext(DataContext);

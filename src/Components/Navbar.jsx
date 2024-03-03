@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Input, Typography } from "@material-tailwind/react";
 
 import logo from "../assets/logo.png";
@@ -12,6 +13,7 @@ import { DataContext } from "../../DataContext";
 export default function Navbar() {
   // handling scroll for the navigation
   const ctx = useContext(DataContext);
+
   window.addEventListener("scroll", function () {
     var navbar = document.getElementById("navbar");
     var btnSearch = document.getElementById("btn-search");
@@ -28,15 +30,21 @@ export default function Navbar() {
       btnSearch.classList.remove("hidden");
     }
   });
+
   const openDrawer = () => {
-    console.log("categories set");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    console.log("check drawer: ", ctx);
     ctx.setDrawerVisib(true);
   };
+
   return (
     <>
       <nav
         id="navbar"
-        className="z-50 fixed flex justify-between w-[85%] sm:w-[90%] h-[60px] mx-auto  my-2 px-0 py-4 top-0 items-center md:justify-start  text-black font-openSans text-[12px] sm:text-[16px] md:text-[14px] rounded-full  bg-white hover:text-black "
+        className="z-50 fixed flex justify-between w-full h-[60px] mx-auto  px-0 py-10 top-0 items-center md:justify-start  text-black font-openSans text-[12px] sm:text-[16px] md:text-[14px]   bg-white hover:text-black "
       >
         <img
           src={logo}
@@ -86,10 +94,18 @@ export default function Navbar() {
         </div>
         {/* Nav items */}
         <div className="ml-auto hidden lg:flex justify-around items-center">
-          <span className="ml-3 sm:ml-6">Home</span>
-          <button className="ml-3 sm:ml-6 mr-5" onClick={openDrawer}>
-            categories
-          </button>
+          <Link to="/">
+            <span className="ml-3 sm:ml-6">Home</span>
+          </Link>
+          <Link to="cart">
+            <span className="ml-3 sm:ml-6">Cart</span>
+          </Link>
+
+          <Link to="/categories">
+            <button className="ml-3 sm:ml-6 mr-5" onClick={openDrawer}>
+              categories
+            </button>
+          </Link>
 
           <div className="ml-auto sm:mr-5">
             <Typography
@@ -127,6 +143,7 @@ export default function Navbar() {
           />
         </div>
       </nav>
+      <DrawerCategories text="categories" id="categoryDrawer" />
     </>
   );
 }
