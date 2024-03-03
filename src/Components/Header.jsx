@@ -22,8 +22,7 @@ export default function Header({ products }) {
   return (
     <>
       <div
-        className={`w-full sm:${
-          ctx.selectedCategories.length === 0 ? "h-[80vh]" : "h-auto bg-black"
+        className={`w-full sm:h-[80vh]
         }  bg-cover bg-center bg-no-repeat flex content-center justify-center bg-gradient-to-b from-blue-500 to-blue-300`}
       >
         {ctx.selectedCategories.length === 0 && (
