@@ -74,10 +74,10 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
-  <DataProvider>
-    <RouterProvider router={router} />
-    {/* <App /> */}
-  </DataProvider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <DataProvider>
+      <RouterProvider router={router} />
+      {/* <App /> */}
+    </DataProvider>
+  </React.StrictMode>
 );

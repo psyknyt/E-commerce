@@ -16,18 +16,15 @@ export default function Navbar() {
 
   window.addEventListener("scroll", function () {
     var navbar = document.getElementById("navbar");
-    var btnSearch = document.getElementById("btn-search");
 
     // console.log(window.scrollY, y);
 
     if (window.scrollY > 0) {
       navbar.classList.remove("bg-white");
       navbar.classList.add("blur-nav");
-      btnSearch.classList.add("hidden");
     } else {
       navbar.classList.remove("blur-nav");
       navbar.classList.add("bg-white");
-      btnSearch.classList.remove("hidden");
     }
   });
 
@@ -84,11 +81,7 @@ export default function Navbar() {
               </svg>
             </div>
           </div>
-          <Button
-            size="md"
-            id="btn-search"
-            className="z-1 mt-1 rounded-lg sm:mt-0 bg-black"
-          >
+          <Button size="md" className="z-1 mt-1 rounded-lg sm:mt-0 bg-black">
             Search
           </Button>
         </div>
@@ -97,10 +90,9 @@ export default function Navbar() {
           <Link to="/">
             <span className="ml-3 sm:ml-6">Home</span>
           </Link>
-          <Link to="cart">
+          <Link to="/cart">
             <span className="ml-3 sm:ml-6">Cart</span>
           </Link>
-
           <Link to="/categories">
             <button className="ml-3 sm:ml-6 mr-5" onClick={openDrawer}>
               categories

@@ -55,7 +55,7 @@ export default function DrawerCategories({ text }) {
           </IconButton>
         </div>
         <List>
-          {ctx.categories.map((el, index) => (
+          {ctx.categories?.map((el, index) => (
             <ListItem className="flex justify-between" key={index}>
               {el}
               <ListItemPrefix>

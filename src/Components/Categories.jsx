@@ -15,14 +15,13 @@ export default function Categories() {
   });
 
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (ctx.selectedCategories?.length == 0) {
-  //     console.log("Helllo Saurav");
-  //     navigate("/");
-  //   }
-  // }, [ctx.selectedCategories]);
 
   let content;
+  useEffect(() => {
+    if (ctx.selectedCategories?.length === 0) {
+      navigate("/");
+    }
+  }, [ctx.selectedCategories, navigate]);
 
   if (ctx.selectedCategories?.length > 0) {
     console.log("show products...: ", ctx.selectedCategories.length);
@@ -32,7 +31,7 @@ export default function Categories() {
           Showing for Categories..
         </div>
         <div className="flex  gap-4 my-4 mx-auto px-8 py-5 overflow-x-auto">
-          {ctx.selectedCategories.map((el, index) => (
+          {ctx.selectedCategories?.map((el, index) => (
             <CategroyButton props={el} key={index} />
           ))}
         </div>
@@ -43,8 +42,6 @@ export default function Categories() {
         </div>
       </>
     );
-  } else if (ctx.selectedCategories.length === 0) {
-    navigate("/");
   }
 
   return <div className="pt-[200px] bg-black">{content}</div>;

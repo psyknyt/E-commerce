@@ -1,7 +1,8 @@
 // DataProvider.js
 import React, { useState, useEffect, useReducer } from "react";
 import { DataContext } from "./DataContext";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
 const defaultState = {
   data: [],
@@ -10,7 +11,8 @@ const defaultState = {
   selectedCategories: [],
   wishlist: [],
   cart: [],
-  selectedProjectId: undefined,
+  selectedProductId: null,
+  selectedProduct: undefined,
   pageNumber: 1,
   drawerVisib: false,
 };
@@ -70,7 +72,7 @@ const DataReducer = (state, action) => {
     }
     // Convert Set back to an array
     const updatedSelectedCategories = Array.from(updatedCategoriesSet);
-
+    console.log("usc: ", updatedSelectedCategories);
     return {
       ...state,
       selectedCategories: updatedSelectedCategories,
@@ -116,6 +118,17 @@ const DataReducer = (state, action) => {
     return {
       ...state,
       cart: [...state.cart, newProduct],
+    };
+  }
+  if (action.type === "setSelectedProduct") {
+    // console.log("selected product id: ", action.payload);
+    const selectedProduct = state.products.find((product) => {
+      return product.id === action.payload;
+    });
+
+    return {
+      ...state,
+      selectedProduct: selectedProduct,
     };
   }
 };
@@ -177,6 +190,9 @@ const DataProvider = (props) => {
   const addToCart = (id) => {
     dispatchAction({ type: "addToCart", payload: id });
   };
+  const setSelectedProduct = (id) => {
+    dispatchAction({ type: "setSelectedProduct", payload: id });
+  };
 
   const res = {
     data: data,
@@ -185,6 +201,9 @@ const DataProvider = (props) => {
     wishlist: productState.wishlist,
     cart: productState.cart,
     selectedCategories: productState.selectedCategories,
+    selectedProductId: productState.selectedProjectId,
+    selectedProduct: productState.selectedProduct,
+    setSelectedProduct: setSelectedProduct,
     pageNumber: productState.pageNumber,
     pagination: pagination,
     nextPage: nextPage,

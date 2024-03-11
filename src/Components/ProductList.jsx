@@ -28,7 +28,7 @@ const ProductList = memo(({}) => {
 
   const filterProducts = products.filter((product) => {
     // Check if the product's category matches any of the selected categories
-    return ctx.selectedCategories.includes(product.category);
+    return ctx.selectedCategories?.includes(product.category);
   });
 
   if (filterProducts.length > 0) {
