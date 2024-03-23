@@ -11,6 +11,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import ProductInfo from "./Components/ProductInfo";
+import Nav from "./Components/Navbar";
 
 function App() {
   const [product, setProduct] = useState([]);
