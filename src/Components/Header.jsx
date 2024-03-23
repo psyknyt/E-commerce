@@ -27,7 +27,7 @@ export default function Header({ products }) {
       >
         <div className="flex flex-col justify-center items-center text-white relative z-10">
           <div className="mx-auto font-abel text-[32px] md:text-[46px] sm:text-[48px] lg:[72px] w-[70%] text-center">
-            Header Shop whatever you want to, and You can pay later...🥳
+            Shop whatever you want to, and You can pay later...🥳
           </div>
           <div className="text-[12px] mx-auto w-[50%] text-center my-3">
             We are still under build...

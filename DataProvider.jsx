@@ -4,6 +4,8 @@ import { DataContext } from "./DataContext";
 import { redirect, useNavigate } from "react-router-dom";
 import { unstable_renderSubtreeIntoContainer } from "react-dom";
 
+import axios from "./src/axios";
+
 const defaultState = {
   data: [],
   products: [],
@@ -141,32 +143,31 @@ const DataProvider = (props) => {
   const [productState, dispatchAction] = useReducer(DataReducer, defaultState);
 
   useEffect(() => {
-    fetch(`https://dummyjson.com/products/?limit=100`)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        dispatchAction({ type: "setData", payload: data });
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    try {
+      async function getData() {
+        const axiosData = await axios.get("/?limit=100");
+        const axiosCategories = await axios.get("/categories");
 
-    fetch(`https://dummyjson.com/products/?limit=100`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts(data.products);
-        dispatchAction({ type: "setProducts", payload: data.products });
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+        setData(axiosData.data);
+        dispatchAction({ type: "setData", payload: axiosData.data });
 
-    fetch("https://dummyjson.com/products/categories")
-      .then((response) => response.json())
-      .then((data) => {
-        productState.categories = data;
+        setProducts(axiosData.data.products);
+        dispatchAction({
+          type: "setProducts",
+          payload: axiosData.data.products,
+        });
+
+        productState.categories = axiosCategories.data;
         dispatchAction({
           type: "setCategories",
           payload: productState.categories,
         });
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+      }
+
+      getData();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const pagination = (value) => {

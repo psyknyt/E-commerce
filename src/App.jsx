@@ -3,19 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import { DataContext } from "../DataContext";
 
-import ProductCard from "./Components/ProductCard";
-import Pagination from "./Components/Pagination";
-import ProductList from "./Components/ProductList";
-
 import Categories from "./Components/Categories";
 import Cart from "./Components/Cart";
 
-import DrawerCategories from "./Components/Drawer";
 import "./App.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
-import ErrorPage from "./Components/ErrorPage";
 import ProductInfo from "./Components/ProductInfo";
 
 function App() {
@@ -31,6 +25,12 @@ function App() {
     }
     setCategories(ctx.categories);
   }, [ctx.data]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/categories");
+  }, [ctx.selectedCategories]);
 
   return (
     <>

@@ -17,7 +17,7 @@ export default function ProductInfo() {
       </div>
     );
   }
-  console.log("product: ", product.images);
+
   return (
     <>
       <div className="my-auto pt-[6rem] flex flex-col lg:flex-row  gap-2 bg-gray-200">

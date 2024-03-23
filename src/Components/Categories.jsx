@@ -20,6 +20,8 @@ export default function Categories() {
   useEffect(() => {
     if (ctx.selectedCategories?.length === 0) {
       navigate("/");
+    } else {
+      navigate("/categories");
     }
   }, [ctx.selectedCategories, navigate]);
 

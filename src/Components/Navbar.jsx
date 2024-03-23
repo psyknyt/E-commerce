@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button, Input, Typography } from "@material-tailwind/react";
 
 import logo from "../assets/logo.png";
-import { open } from "../assets/svg";
+import { open, close } from "../assets/svg";
 
 import DrawerCategories from "./Drawer";
 import "../App.css";
@@ -14,6 +14,12 @@ export default function Navbar() {
   // handling scroll for the navigation
   const ctx = useContext(DataContext);
 
+  // navbar state for small device
+  const [toggle, setToggle] = useState(false);
+  const handleToggle = () => {
+    setToggle(!toggle);
+    console.log("open for small device: ", toggle);
+  };
   window.addEventListener("scroll", function () {
     var navbar = document.getElementById("navbar");
 
@@ -129,7 +135,8 @@ export default function Navbar() {
         {/* open Close button for small devices to see the navbar */}
         <div className="lg:hidden ml-auto">
           <img
-            src={open}
+            src={!toggle ? open : close}
+            onClick={handleToggle}
             alt="menu"
             className="w-[30px] object-contain cursor-pointer mx-4"
           />

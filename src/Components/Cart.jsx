@@ -8,7 +8,7 @@ export default function Cart() {
   const ctx = useContext(DataContext);
 
   return (
-    <>
+    <div className="h-screen bg-gray-200">
       <div className="w-full h-[30vh] text-4xl flex justify-center items-center  bg-gray-200">
         {ctx.cart.length > 0 && (
           <p className="text-4xl text-center">Showing Cart...</p>
@@ -25,6 +25,6 @@ export default function Cart() {
         </div>
         <CartTotal />
       </div>
-    </>
+    </div>
   );
 }
