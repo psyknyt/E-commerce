@@ -45,6 +45,10 @@ export default function Categories() {
       </>
     );
   }
+  // TODO navigate to / route when selectedCategories are cleared
+  else {
+    navigate("/");
+  }
 
   return <div className="pt-[200px] bg-black">{content}</div>;
 }

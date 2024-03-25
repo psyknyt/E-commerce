@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import ProductInfo from "./Components/ProductInfo";
 import Nav from "./Components/Navbar";
+import { Footer } from "./Components/Footer";
 
 function App() {
   const [product, setProduct] = useState([]);
@@ -43,8 +44,7 @@ function App() {
         <Route path="/productInfo" element={<ProductInfo />} />
         {/* <Route path="*" element={<ErrorPage />} /> */}
       </Routes>
-      {/* <Categories /> */}
-      {/* <Cart /> */}
+      <Footer />
     </>
   );
 }
