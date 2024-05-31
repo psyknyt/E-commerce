@@ -17,9 +17,11 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 import { DataContext } from "../../DataContext";
 import { Link, useNavigate, Routes, Route } from "react-router-dom";
+import AuthContext from "../../AuthContext";
 
 export default function ProductCard({ props }) {
   const ctx = useContext(DataContext);
+  const authCtx = useContext(AuthContext);
 
   const price = props.price * 84;
   const formattedPrice = price.toLocaleString("en-IN", {
@@ -45,11 +47,25 @@ export default function ProductCard({ props }) {
   const navigate = useNavigate();
 
   const handleSelectedProject = (e) => {
-    if (e.target.textContent !== "Add to Cart") {
+    if (e.target.getAttribute("id") === "btn") {
+      return;
+    } else {
       ctx.setSelectedProduct(props.id);
       navigate("/productInfo");
+    }
+  };
+
+  const handleWishlist = (ev) => {
+    console.log("auth ctx is: ", authCtx);
+    if (authCtx.token === null) {
+      alert("you need to sign in first");
+      return;
+    }
+    if (ev.target.checked) {
+      console.log("user details details: ", ctx);
+      ctx.addToWishlist(ctx.user.id, props.id);
     } else {
-      console.log("It contains : ", e, e.target);
+      ctx.removeFromWishlist(ctx.user.id, props.id);
     }
   };
 
@@ -73,7 +89,7 @@ export default function ProductCard({ props }) {
             variant="lead"
             className="font-bold truncate uppercase"
           >
-            {props.brand}
+            {props.title}
           </Typography>
           <div className="relative  px-5">
             <Typography
@@ -110,7 +126,8 @@ export default function ProductCard({ props }) {
                 <input
                   type="checkbox"
                   className="absolute opacity-0 w-6 h-6"
-                  onChange={(ev) => ctx.handleWishlist(ev, props.id)}
+                  id="btn"
+                  onChange={handleWishlist}
                 />
               </PopoverHandler>
               <svg
@@ -147,6 +164,7 @@ export default function ProductCard({ props }) {
           ripple={false}
           fullWidth={true}
           onClick={() => ctx.addToCart(props.id)}
+          id="btn"
           className="add-to-cart bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
         >
           Add to Cart

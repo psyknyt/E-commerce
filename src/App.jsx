@@ -5,6 +5,9 @@ import { DataContext } from "../DataContext";
 
 import Categories from "./Components/Categories";
 import Cart from "./Components/Cart";
+import Signup from "./Components/Signup";
+import SignIn from "./Components/Signin";
+import UserProfile from "./Components/userProfile";
 
 import "./App.css";
 
@@ -24,8 +27,8 @@ function App() {
     if (ctx.data?.products) {
       setProduct(ctx.data.products);
       // console.log("product updated: ", product);
+      setCategories(ctx.categories);
     }
-    setCategories(ctx.categories);
   }, [ctx.data]);
 
   const navigate = useNavigate();
@@ -42,8 +45,12 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/productInfo" element={<ProductInfo />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/userprofile" element={<UserProfile />} />
         {/* <Route path="*" element={<ErrorPage />} /> */}
       </Routes>
+
       <Footer />
     </>
   );

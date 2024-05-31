@@ -18,6 +18,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import DataProvider from "../DataProvider.jsx";
 import ErrorPage from "./Components/ErrorPage.jsx";
+import { AuthContextProvider } from "../AuthContext.jsx";
 import "./index.css";
 
 import {
@@ -36,9 +37,11 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <AuthContextProvider>
     <DataProvider>
       <RouterProvider router={router} />
     </DataProvider>
-  </React.StrictMode>
+  </AuthContextProvider>
+  // </React.StrictMode>
 );

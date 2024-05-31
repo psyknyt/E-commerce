@@ -8,10 +8,15 @@ import { DataContext } from "../../DataContext";
 
 import logo from "../assets/logo.png";
 
+import { CiPower } from "react-icons/ci";
+import { CgProfile } from "react-icons/cg";
+
 const navbarProps = {
   Logo: { type: "img", text: "LOGO GOES HERE !", img: "../assets/logo.png" },
   Home: { type: "Link", link: "Home" },
   Cart: { type: "Link", link: "Cart" },
+  Signup: { type: "Link", link: "signup" },
+  Signin: { type: "Link", link: "signin" },
   Categories: { type: "drawer", link: "Categories" },
   Account: {
     type: "dropdown",
@@ -148,7 +153,7 @@ export default function Nav() {
               Categories
             </li>
           </Link>
-          <Link to="/">
+          <Link to="/userprofile">
             <li
               className="navlink h-16 md:h-full bg-orange text-white  text-xl justify-center items-center flex gap-2"
               onClick={() => setShow(!show)}
@@ -175,7 +180,10 @@ export default function Nav() {
         </ul>
       </div>
       {/* for bigger screen */}
-      <div className="menu-wrapper-md ml-auto hidden md:flex px-4  h-full text-sm">
+      <div
+        className="menu-wrapper-md ml-auto hidden md:flex px-4  h-full text-sm"
+        onMouseEnter={() => setIsDropdownVisible(false)}
+      >
         <ul className="type-none flex  md:space-x-10 h-full">
           <Link to="/">
             <div className="navlink relative h-full">
@@ -198,14 +206,16 @@ export default function Nav() {
             </div>
           </Link>
           {/* TODO changed the route to / on account */}
-          <Link to="/">
-            <div
-              className="navlink relative h-full"
-              onMouseEnter={() => setIsDropdownVisible(true)}
-              onMouseLeave={() => setIsDropdownVisible(false)}
-            >
-              <div className="flex group items-center gap-1  h-full ">
-                <p className="">Account</p>
+          <Link to="/userprofile">
+            <div className="navlink relative h-full">
+              <div
+                className="relative flex group items-center gap-1  h-full "
+                onMouseEnter={() => setIsDropdownVisible(!isDropDownVisible)}
+              >
+                <p className="flex gap-2">
+                  <CgProfile className="w-4 h-4 text-blue-[#FC4100]" />
+                  Account
+                </p>
                 <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-300 group-hover:border-black"></div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -223,14 +233,17 @@ export default function Nav() {
                 </svg>
 
                 {isDropDownVisible && (
-                  <div
-                    className="absolute top-full left-0 bg-white  shadow-md rounded  w-[200%]"
-                    onMouseLeave={() => setIsDropdownVisible(false)}
-                  >
-                    <ul>
-                      <li className="p-2 hover:bg-gray-100">Dropdown Item 1</li>
-                      <li className="p-2 hover:bg-gray-100">Dropdown Item 2</li>
-                      <li className="p-2 hover:bg-gray-100">Dropdown Item 3</li>
+                  <div className="absolute top-full left-0 bg-white  shadow-md rounded  w-[200%] py-3">
+                    <ul className=" justify-start flex flex-col">
+                      <li className="p-2 hover:bg-gray-100 flex gap-2 items-center">
+                        <CgProfile className="w-4 h-4 text-blue-[#FC4100]" />
+                        Profile
+                      </li>
+                      <li className="p-2 hover:bg-gray-100 flex gap-2 items-center">
+                        <CiPower className="w-4 h-4" />
+                        Log out
+                      </li>
+                      {/* <li className="p-2 hover:bg-gray-100">Dropdown Item 3</li> */}
                     </ul>
                   </div>
                 )}
@@ -252,6 +265,18 @@ export default function Nav() {
               <div className="flex justify-center items-center group gap-1">
                 <p>Cart</p>
               </div>
+            </div>
+          </Link>
+          <Link to="/signup">
+            <div className="group flex items-center navlink group relative h-full">
+              <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-3000 group-hover:border-black"></div>
+              <p>Signup</p>
+            </div>
+          </Link>
+          <Link to="/signin">
+            <div className="group flex items-center navlink group relative h-full">
+              <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-3000 group-hover:border-black"></div>
+              <p>Signin</p>
             </div>
           </Link>
         </ul>

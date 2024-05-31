@@ -2,6 +2,7 @@
 import React from "react";
 
 export const DataContext = React.createContext({
+  user: {},
   data: [],
   products: [],
   categories: [],
@@ -18,6 +19,8 @@ export const DataContext = React.createContext({
   drawerVisib: false,
   setDrawerVisib: (value) => {},
   handleCategoryFilter: (event, category) => {},
-  handleWishlist: (ev, id) => {},
+  addToWishlist: (userId, productId) => {},
+  removeFromWishlist: (userId, productId) => {},
   addToCart: (id) => {},
+  setUserDetails: (user) => {},
 });

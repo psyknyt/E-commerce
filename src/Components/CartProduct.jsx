@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { DataContext } from "../../DataContext";
-
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -13,11 +13,13 @@ import {
   Popover,
   PopoverHandler,
   PopoverContent,
+  Tooltip,
 } from "@material-tailwind/react";
 
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function CartProduct({ props, index }) {
+  const navigate = useNavigate();
   const ctx = useContext(DataContext);
   const cart = [...ctx?.cart];
   const price = cart[index]?.price * 84;
@@ -52,105 +54,90 @@ export default function CartProduct({ props, index }) {
     ctx.cart[index].quantity -= 1;
   };
 
-  const handleSelectedProject = () => {
-    ctx.setSelectedProduct(props.id);
+  const handleSelectedProject = (e) => {
+    if (e.target.getAttribute("id") === "btn") {
+      return;
+    } else {
+      ctx.setSelectedProduct(props.id);
+      navigate("/productInfo");
+    }
   };
 
   return (
-    <Link to="/productInfo">
-      <Card
-        onClick={handleSelectedProject}
-        className="w-full sm:max-w-[48rem] flex-col md:flex-row gap-4 justify-center  bg-gray-50 mb-5"
+    <Card
+      onClick={handleSelectedProject}
+      className="w-full sm:max-w-[48rem] flex-col md:flex-row gap-4 justify-center  bg-gray-50 mb-5"
+    >
+      <CardHeader
+        shadow={false}
+        floated={false}
+        className="m-0 w-full md:w-2/6 shrink-0 md:rounded-r-none "
       >
-        <CardHeader
-          shadow={false}
-          floated={false}
-          className="m-0 w-full md:w-2/6 shrink-0 md:rounded-r-none "
-        >
-          <img
-            src={cart[index].images[0]}
-            alt="card-image"
-            className="h-full w-full max-h-[300px] object-cover object-center"
-          />
-        </CardHeader>
-        <CardBody className="flex content-center flex-col gap-2 md:gap-4 w-full">
-          <Typography variant="h4" color="blue-gray" className="mb-2">
-            {cart[index].title}
-          </Typography>
-          <Typography color="gray" className=" font-normal ">
-            {cart[index].description}
-          </Typography>
-          <div className="flex items-center justify-between content-center gap-2  text-blue-gray-500 py-2 md:py-4">
-            <div className="flex items-center gap-2">
-              <Rating value={Math.floor(cart[index].rating)} readonly />
-              {cart[index].rating}
-            </div>
-            <div className="relative inline-flex items-center gap-2">
-              <Popover>
-                <PopoverHandler>
+        <img
+          src={cart[index].images[0]}
+          alt="card-image"
+          className="h-full w-full max-h-[300px] object-cover object-center"
+        />
+      </CardHeader>
+      <CardBody className="flex content-center flex-col gap-2 md:gap-4 w-full">
+        <Typography variant="h4" color="blue-gray" className="mb-2">
+          {cart[index].title}
+        </Typography>
+        <Typography color="gray" className=" font-normal ">
+          {cart[index].description}
+        </Typography>
+        <div className="flex items-center justify-between content-center gap-2  text-blue-gray-500 py-2 md:py-4">
+          <div className="flex items-center gap-2">
+            <Rating value={Math.floor(cart[index].rating)} readonly />
+            {cart[index].rating}
+          </div>
+          <div className="relative inline-flex items-center gap-2">
+            <Popover>
+              <PopoverHandler>
+                <Tooltip content="Add to wishlist">
                   <input
                     type="checkbox"
                     className="absolute opacity-0 w-6 h-6"
+                    id="btn"
                     onChange={(ev) => ctx.handleWishlist(ev, props.id)}
                   />
-                </PopoverHandler>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill={
-                    ctx.wishlist.find((el) => el.id === props.id)
-                      ? "#D24545"
-                      : "#FCF5ED"
-                  }
-                  viewBox="0 0 24 24"
-                  strokeWidth={
-                    ctx.wishlist.find((el) => el.id === props.id) ? 0.2 : 0.8
-                  }
-                  stroke="currentColor"
-                  className="z-1 w-6 h-6 transition ease-in-out"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
-                <PopoverContent>Added to wishlist</PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          {/* amount and rating for bigger and smaller devices */}
-          <div className="hidden md:flex items-center justify-between">
-            <div className="flex gap-2 items-center">
-              <div>Quantity:</div>
-              <div className="bg-gray-600 rounded-md">
-                <button
-                  onClick={decreaseQuantity}
-                  className="px-2 text-white"
-                  disabled={cart[index].quantity === 1}
-                >
-                  -
-                </button>
-                <input
-                  type="text"
-                  placeholder={cart[index].quantity}
-                  readOnly
-                  className="border-[1px] border-gray-500 w-10 text-center rounded-sm placeholder:text-black "
+                </Tooltip>
+              </PopoverHandler>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={
+                  ctx.wishlist.find((el) => el.id === props.id)
+                    ? "#D24545"
+                    : "#FCF5ED"
+                }
+                viewBox="0 0 24 24"
+                strokeWidth={
+                  ctx.wishlist.find((el) => el.id === props.id) ? 0.2 : 0.8
+                }
+                stroke="currentColor"
+                className="z-1 w-6 h-6 transition ease-in-out"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
                 />
-                <button onClick={increaseQuantity} className="px-2 text-white">
-                  +
-                </button>
-              </div>
-            </div>
-            <div>Amount: {formattedPrice}</div>
-          </div>
-          <div className="flex justify-between md:hidden py-2">
-            <div className="flex gap-2 items-center">
-              <div>Qunatity:</div>
+              </svg>
 
+              <PopoverContent>Added to wishlist</PopoverContent>
+            </Popover>
+          </div>
+        </div>
+        {/* amount and rating for bigger and smaller devices */}
+        <div className="hidden md:flex items-center justify-between">
+          <div className="flex gap-2 items-center">
+            <div>Quantity:</div>
+            <div className="bg-gray-600 rounded-md">
               <button
                 onClick={decreaseQuantity}
-                className="rounded-full w-5"
+                className="px-2 text-white"
                 disabled={cart[index].quantity === 1}
+                id="btn"
               >
                 -
               </button>
@@ -158,14 +145,44 @@ export default function CartProduct({ props, index }) {
                 type="text"
                 placeholder={cart[index].quantity}
                 readOnly
-                className="border-[1px] border-black w-10 text-center rounded-md placeholder:text-black "
+                className="border-[1px] border-gray-500 w-10 text-center rounded-sm placeholder:text-black "
               />
-              <button onClick={increaseQuantity}>+</button>
+              <button
+                onClick={increaseQuantity}
+                className="px-2 text-white"
+                id="btn"
+              >
+                +
+              </button>
             </div>
-            <div>Amt: {formattedPrice}</div>
           </div>
-        </CardBody>
-      </Card>
-    </Link>
+          <div>Amount: {formattedPrice}</div>
+        </div>
+        <div className="flex justify-between md:hidden py-2">
+          <div className="flex gap-2 items-center">
+            <div>Qunatity:</div>
+
+            <button
+              onClick={decreaseQuantity}
+              className="rounded-full w-5 "
+              disabled={cart[index].quantity === 1}
+              id="btn"
+            >
+              -
+            </button>
+            <input
+              type="text"
+              placeholder={cart[index].quantity}
+              readOnly
+              className="border-[1px] border-black w-10 text-center rounded-md placeholder:text-black "
+            />
+            <button onClick={increaseQuantity} id="btn">
+              +
+            </button>
+          </div>
+          <div>Amt: {formattedPrice}</div>
+        </div>
+      </CardBody>
+    </Card>
   );
 }

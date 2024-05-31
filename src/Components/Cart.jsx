@@ -1,14 +1,16 @@
 import { useContext } from "react";
 import { DataContext } from "../../DataContext";
-
+import AuthContext from "../../AuthContext";
 import CartProduct from "./CartProduct";
 import CartTotal from "./CartTotal";
 
 export default function Cart() {
   const ctx = useContext(DataContext);
+  const authCtx = useContext(AuthContext);
+  console.log("authenticating context is: ", authCtx);
 
   return (
-    <div className="h-screen bg-gray-200">
+    <div className="min-h-screen bg-gray-200">
       <div className="w-full h-[30vh] text-4xl flex justify-center items-center  bg-gray-200">
         {ctx.cart.length > 0 && (
           <p className="text-4xl text-center">Showing Cart...</p>

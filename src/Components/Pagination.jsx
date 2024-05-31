@@ -62,13 +62,14 @@ const Pagination = memo(() => {
         <IconButton {...getItemProps(3)}>3</IconButton>
         <IconButton {...getItemProps(4)}>4</IconButton>
         <IconButton {...getItemProps(5)}>5</IconButton>
+        <IconButton {...getItemProps(6)}>6</IconButton>
       </div>
       <Tooltip content="Next Page">
         <ArrowRightIcon
-          strokeWidth={ctx.pageNumber === 5 ? 1 : 2}
+          strokeWidth={ctx.pageNumber === 6 ? 1 : 2}
           className="sm:hidden h-4 w-4"
           onClick={next}
-          disabled={ctx.pageNumber === 5}
+          disabled={ctx.pageNumber === 6}
         />
       </Tooltip>
       <Tooltip content="Next Page">
@@ -76,7 +77,7 @@ const Pagination = memo(() => {
           variant="text"
           className="hidden sm:flex items-center gap-1 sm:gap-2 "
           onClick={next}
-          disabled={ctx.pageNumber === 5}
+          disabled={ctx.pageNumber === 6}
         >
           Next
           <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />

@@ -1,29 +1,32 @@
 import React, { useState, useContext, memo, useEffect } from "react";
-
 import { DataContext } from "../../DataContext";
 import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
 import { Spinner, Button } from "@material-tailwind/react";
 
 const ProductList = memo(({}) => {
-  const [products, setProduct] = useState([]);
+  const [products, setProducts] = useState([]);
   const ctx = useContext(DataContext);
+  // console.log("product data is: ", ctx);
 
   useEffect(() => {
-    if (ctx.data?.products) {
-      setProduct(ctx.data.products);
-      // console.log("product updated: ", product);
+    if (ctx?.data?.products) {
+      setProducts(ctx.data.products); // Ensure products is an array
+    } else {
+      console.log("No product data received");
     }
     // setCategories(ctx.categories);
   }, [ctx.data]);
-  const currentPage = ctx.pageNumber;
 
-  const itemsPerPage = 20;
+  // console.log("products in product list: ", products, ctx);
+
+  const currentPage = ctx.pageNumber || 1;
+  const itemsPerPage = 30;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  let productsToShow = products?.slice(startIndex, endIndex);
+  let productsToShow = products.slice(startIndex, endIndex);
   // Slice product list based on current page and items per page
 
   const filterProducts = products.filter((product) => {
@@ -32,14 +35,15 @@ const ProductList = memo(({}) => {
   });
 
   if (filterProducts.length > 0) {
-    productsToShow = filterProducts?.slice(startIndex, endIndex);
+    productsToShow = filterProducts.slice(startIndex, endIndex);
   }
+  // console.log("products to show: ", productsToShow);
 
   return (
     <div>
       {/* loading spinner  */}
       {products.length === 0 && (
-        <div className="w-full flex justify-center items-center bg-gradient-to-b   pb-10 p-5 text-white text-3xl">
+        <div className="w-full flex justify-center items-center bg-gradient-to-b pb-10 p-5 text-white text-3xl">
           <Button
             loading={true}
             variant="text"
@@ -51,8 +55,8 @@ const ProductList = memo(({}) => {
       )}
       {/* Product cards.. */}
       {products.length > 0 && (
-        <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-full mx-auto bg-gradient-to-b from-blue-500 to-blue-300  pb-10 p-5">
-          {productsToShow?.map((product, index) => (
+        <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-full mx-auto bg-gradient-to-b from-blue-500 to-blue-300 pb-10 p-5">
+          {productsToShow.map((product, index) => (
             <ProductCard props={product} key={index} />
           ))}
         </div>

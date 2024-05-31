@@ -1,7 +1,7 @@
 import React from "react";
+import { TbTruckReturn } from "react-icons/tb";
 
 function ProductInfoDesc({ product }) {
-  console.log(product);
   const price = product.price * 84;
   const formattedPrice = price.toLocaleString("en-IN", {
     maximumFractionDigits: 2,
@@ -19,9 +19,13 @@ function ProductInfoDesc({ product }) {
 
   return (
     <>
-      <div className="flex flex-col shrink gap-2 h-screen px-5 py-3">
+      <div className="flex flex-col shrink gap-2 h-[80vh] px-5 py-3">
         <div className="text-sm">{`category >> ${product.category}`}</div>
         <div className="text-5xl">{product.title}</div>
+        <div className="flex flex-row gap-3 items-center">
+          <p className="text-xs font-bold">Brand: </p>
+          <p className="text-sm">{product.brand}</p>
+        </div>
         <div className="flex bg-green-600 text-white w-[62px] py-1 px-2 rounded-lg">
           <div>{product.rating}</div>
           <svg
@@ -30,7 +34,7 @@ function ProductInfoDesc({ product }) {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-4 h-6"
+            className="w-4 h-6"
           >
             <path
               stroke-linecap="round"
@@ -40,16 +44,23 @@ function ProductInfoDesc({ product }) {
           </svg>
         </div>
         <div className="flex gap-4 items-center top-[9px]">
-          <div className="discountedPrice text-green-600">
-            {discountedPrice}
-          </div>
           <div className="formattedPrice relative">
             <div className="relative text-sm px-1">{formattedPrice}</div>
             <hr className="absolute object-fit w-[100%] left-0 top-[10px] border-black bg-black" />
           </div>
-          <div className="text-sm text-green-700">
-            {product.discountPercentage}%
+          <div className="discountedPrice text-green-600">
+            {discountedPrice}
           </div>
+          <div className="flex flex-row items-center gap-2">
+            {/* <p className="text-lg">Discount: </p> */}
+            <p className="text-sm  text-red-700 ">
+              -{product.discountPercentage}%
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-row gap-2 items-center">
+          <TbTruckReturn />
+          <p>{product.returnPolicy}</p>
         </div>
         <div className="text-xl">{product.description}</div>
       </div>

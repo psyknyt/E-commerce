@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../DataContext";
 import { Typography } from "@material-tailwind/react";
-import { pipe } from "framer-motion";
 
 export default function CartTotal() {
   const ctx = useContext(DataContext);

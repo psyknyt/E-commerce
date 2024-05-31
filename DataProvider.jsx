@@ -7,6 +7,7 @@ import { unstable_renderSubtreeIntoContainer } from "react-dom";
 import axios from "./src/axios";
 
 const defaultState = {
+  user: {},
   data: [],
   products: [],
   categories: [],
@@ -21,6 +22,8 @@ const defaultState = {
 
 // data Reducer
 const DataReducer = (state, action) => {
+  console.log("product list is: ", state, action.payload);
+
   if (action.type === "pagination") {
     return {
       ...state,
@@ -80,24 +83,26 @@ const DataReducer = (state, action) => {
       selectedCategories: updatedSelectedCategories,
     };
   }
-  if (action.type === "handle-wishlist") {
-    const updatedWishlistSet = new Set(state.wishlist);
-
-    if (action.payload.ev.target.checked) {
-      updatedWishlistSet.add(
-        state.products.find((el) => el.id === action.payload.id)
-      );
-    } else {
-      updatedWishlistSet.delete(
-        state.products.find((el) => el.id === action.payload.id)
-      );
-    }
-
-    const updatedWishlistArray = Array.from(updatedWishlistSet);
-
+  if (action.type === "ADD_TO_CART") {
     return {
       ...state,
-      wishlist: updatedWishlistArray,
+      wishlist: [...state.wishlist, action.payload],
+      user: {
+        ...state.user,
+        wishlist: [...state.user.wishlist, action.payload],
+      },
+    };
+  }
+  if (action.type === "REMOVE_FROM_WISHLIST") {
+    return {
+      ...state,
+      wishlist: [state.wishlist.filter((el) => el.id !== action.payload)],
+      user: {
+        ...state.user,
+        wishlist: [
+          state.user.wishlist.filter((el) => el.id !== action.payload),
+        ],
+      },
     };
   }
   if (action.type === "addToCart") {
@@ -108,13 +113,12 @@ const DataReducer = (state, action) => {
 
     if (state.cart.find((product) => product.id === newProduct.id)) {
       state.cart.find((product) => product.id === newProduct.id).quantity += 1;
-      console.log("same");
+
       return {
         ...state,
       };
     } else {
       newProduct.quantity = 1;
-      console.log("not same");
     }
 
     return {
@@ -123,7 +127,7 @@ const DataReducer = (state, action) => {
     };
   }
   if (action.type === "setSelectedProduct") {
-    // console.log("selected product id: ", action.payload);
+    // console.log("selected product id: ", action.payload, state);
     const selectedProduct = state.products.find((product) => {
       return product.id === action.payload;
     });
@@ -131,6 +135,13 @@ const DataReducer = (state, action) => {
     return {
       ...state,
       selectedProduct: selectedProduct,
+    };
+  }
+  if (action.type === "userDetails") {
+    console.log("userDetails are: ", action.payload);
+    return {
+      ...state,
+      user: action.payload,
     };
   }
 };
@@ -145,19 +156,24 @@ const DataProvider = (props) => {
   useEffect(() => {
     try {
       async function getData() {
-        const axiosData = await axios.get("/?limit=100");
+        const axiosData = await axios.get("/?limit=0");
         const axiosCategories = await axios.get("/categories");
-
+        // console.log("axios data is: ", axiosData.data.products);
         setData(axiosData.data);
-        dispatchAction({ type: "setData", payload: axiosData.data });
+        productState.data = axiosData.data;
+        dispatchAction({ type: "setData", payload: productState.data });
 
         setProducts(axiosData.data.products);
+        productState.product = axiosData.data.products;
         dispatchAction({
           type: "setProducts",
-          payload: axiosData.data.products,
+          payload: productState.product,
         });
+        const categories = axiosCategories.data.map((item) =>
+          item.name.toLowerCase()
+        );
 
-        productState.categories = axiosCategories.data;
+        productState.categories = categories;
         dispatchAction({
           type: "setCategories",
           payload: productState.categories,
@@ -185,17 +201,63 @@ const DataProvider = (props) => {
   const handleCategoryFilter = (ev, category) => {
     dispatchAction({ type: "categoryFilter", payload: { ev, category } });
   };
-  const handleWishlist = (ev, id) => {
-    dispatchAction({ type: "handle-wishlist", payload: { ev, id } });
+  const addToWishlist = async (userId, productId) => {
+    try {
+      const response = await fetch("http://localhost:3000/wishlist/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, productId }),
+      });
+
+      const data = await response.json();
+      console.log("response form databae is: ", response);
+      if (response.ok) {
+        dispatchAction({ type: "ADD_TO_WISHLIST", payload: productId });
+      } else {
+        console.error("Failed to add to wishlist:", data.msg);
+      }
+    } catch (error) {
+      console.error("Failed to add to wishlist:", error);
+    }
   };
+
+  const removeFromWishlist = async (userId, productId) => {
+    try {
+      const response = await fetch("http://localhost:3000/wishlist/remove", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, productId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        dispatchAction({ type: "REMOVE_FROM_WISHLIST", payload: productId });
+      } else {
+        console.error("Failed to remove from wishlist:", data.msg);
+      }
+    } catch (error) {
+      console.error("Failed to remove from wishlist:", error);
+    }
+  };
+
   const addToCart = (id) => {
     dispatchAction({ type: "addToCart", payload: id });
   };
+
   const setSelectedProduct = (id) => {
     dispatchAction({ type: "setSelectedProduct", payload: id });
   };
+  const userDetails = (user) => {
+    dispatchAction({ type: "userDetails", payload: user });
+  };
 
   const res = {
+    user: productState.user,
     data: data,
     products: products,
     categories: productState.categories,
@@ -213,8 +275,10 @@ const DataProvider = (props) => {
     drawerVisib: productState.drawerVisib,
     setDrawerVisib: setDrawerVisib,
     handleCategoryFilter: handleCategoryFilter,
-    handleWishlist: handleWishlist,
+    addToWishlist: addToWishlist,
+    removeFromWishlist: removeFromWishlist,
     addToCart: addToCart,
+    setUserDetails: userDetails,
   };
 
   return (
