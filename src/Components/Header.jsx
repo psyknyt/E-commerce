@@ -5,7 +5,6 @@ import ProductList from "./ProductList";
 import DrawerCategories from "./Drawer";
 import Navbar from "./Navbar";
 import Categories from "./Categories";
-import ScreenTimeTracker from "./ScreenTimeTracker";
 import { DataContext } from "../../DataContext";
 
 export default function Header({ products }) {
@@ -54,7 +53,6 @@ export default function Header({ products }) {
           </div>
         </div>
       </div>
-      <ScreenTimeTracker />
       <ProductList />
     </>
   );
