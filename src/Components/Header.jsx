@@ -24,7 +24,7 @@ export default function Header({ products }) {
         className={`w-full h-screen sm:h-[80vh]
         }  bg-cover bg-center bg-no-repeat flex content-center justify-center bg-gradient-to-b from-blue-500 to-blue-300 z-0`}
       >
-        <div className="flex flex-col justify-center items-center text-white relative z-10">
+        <div className="flex flex-col justify-center items-center text-white relative z-10 animate__animated animate__fadeInDown">
           <div className="mx-auto font-abel text-[32px] md:text-[46px] sm:text-[48px] lg:[72px] w-[70%] text-center">
             Shop whatever you want to, and You can pay later...🥳
           </div>

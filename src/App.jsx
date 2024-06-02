@@ -17,6 +17,8 @@ import ProductInfo from "./Components/ProductInfo";
 import Nav from "./Components/Navbar";
 import { Footer } from "./Components/Footer";
 
+import "animate.css";
+
 function App() {
   const [product, setProduct] = useState([]);
   const [categories, setCategories] = useState([]);

@@ -64,8 +64,9 @@ export default function ProductCard({ props }) {
   };
 
   return (
-    <Card
-      className="w-[98%]  mx-auto hover:bg-gray-200 hover:text-white"
+    <div
+      className="w-[98%]  mx-auto bg-gray-50 rounded-lg hover:bg-gray-200 hover:text-white animate__animated animate__fadeInDown"
+      data-aos="fade-up"
       onClick={handleSelectedProject}
     >
       <CardHeader shadow={false} floated={false} className="h-64">
@@ -164,6 +165,6 @@ export default function ProductCard({ props }) {
           Add to Cart
         </Button>
       </CardFooter>
-    </Card>
+    </div>
   );
 }

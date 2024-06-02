@@ -52,7 +52,7 @@ const ProductList = memo(({}) => {
       )}
       {/* Product cards.. */}
       {products.length > 0 && (
-        <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-full mx-auto bg-gradient-to-b from-blue-500 to-blue-300 pb-10 p-5">
+        <div className="grid grid-cols-1 grid-flow-cols md:grid-cols-2 xl:grid-cols-3 gap-4 w-full mx-auto bg-gradient-to-b from-blue-500 to-blue-300 pb-10 p-5 ">
           {productsToShow.map((product, index) => (
             <ProductCard props={product} key={index} />
           ))}
