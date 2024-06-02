@@ -29,7 +29,7 @@ export default function Categories() {
     console.log("show products...: ", ctx.selectedCategories.length);
     content = (
       <>
-        <div className="flex justify-center text-4xl font-bold text-white py-5">
+        <div className="flex justify-center text-4xl font-bold text-white py-5 mx-2 sm:mx-0">
           Showing for Categories..
         </div>
         <div className="flex  gap-4 my-4 mx-auto px-8 py-5 overflow-x-auto">

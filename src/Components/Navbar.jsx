@@ -133,12 +133,12 @@ export default function Nav() {
         } md:h-full md:bottom-auto `}
       >
         <ul
-          className={`ml-auto menu flex flex-col md:flex-row w-full overflow-y-hidden bg-white transition-all duration-500 md:transform-none md:delay-0 md:duration-0 ${
+          className={`pt-[10rem]  ml-auto menu flex flex-col md:flex-row w-full overflow-y-hidden bg-white transition-all duration-500 md:transform-none md:delay-0 md:duration-0 ${
             show ? "h-full pt-4 px-2" : "h-0"
           } md:h-full md:space-x-4  space-y-4 md:space-y-0 md:pt-0 md:pl-auto`}
         >
           <Link to="/">
-            <li className="navdrop md:h-full bg-orange text-white  text-xl">
+            <li className="navdrop md:h-full bg-blue-500 text-white  text-xl">
               <div
                 className="navdrop-navlink h-16 w-full flex justify-center items-center"
                 // Closing the toggle button added this onClick event to every navlink on small devices
@@ -151,7 +151,7 @@ export default function Nav() {
           </Link>
           <Link to="/cart">
             <li
-              className="navlink h-16 md:h-full bg-orange text-white  text-xl justify-center items-center flex"
+              className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex"
               onClick={() => setShow(!show)}
             >
               Cart
@@ -159,10 +159,10 @@ export default function Nav() {
           </Link>
           <Link to="/categories">
             <li
-              className="navlink h-16 md:h-full bg-orange text-white  text-xl justify-center items-center flex"
+              className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex"
               onClick={() => {
-                () => openDrawer();
-                () => setShow(!show);
+                openDrawer();
+                setShow(!show);
               }}
             >
               Categories
@@ -170,7 +170,7 @@ export default function Nav() {
           </Link>
           <Link to="/userprofile">
             <li
-              className="navlink h-16 md:h-full bg-orange text-white  text-xl justify-center items-center flex gap-2"
+              className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex gap-2"
               onClick={() => setShow(!show)}
             >
               <svg
@@ -192,6 +192,26 @@ export default function Nav() {
               </a>
             </li>
           </Link>
+          {authCtx.token && (
+            <Link to="/signup">
+              <li
+                className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex"
+                onClick={() => setShow(!show)}
+              >
+                Sign up
+              </li>
+            </Link>
+          )}
+          {authCtx.token && (
+            <Link to="/signin">
+              <li
+                className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex"
+                onClick={() => setShow(!show)}
+              >
+                Sign in
+              </li>
+            </Link>
+          )}
         </ul>
       </div>
       {/* for bigger screen */}

@@ -21,7 +21,7 @@ export default function Header({ products }) {
   return (
     <>
       <div
-        className={`w-full sm:h-[80vh]
+        className={`w-full h-screen sm:h-[80vh]
         }  bg-cover bg-center bg-no-repeat flex content-center justify-center bg-gradient-to-b from-blue-500 to-blue-300 z-0`}
       >
         <div className="flex flex-col justify-center items-center text-white relative z-10">
