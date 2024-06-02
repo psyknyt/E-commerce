@@ -22,8 +22,6 @@ const defaultState = {
 
 // data Reducer
 const DataReducer = (state, action) => {
-  console.log("product list is: ", state, action);
-
   if (action.type === "pagination") {
     return {
       ...state,
@@ -77,7 +75,7 @@ const DataReducer = (state, action) => {
     }
     // Convert Set back to an array
     const updatedSelectedCategories = Array.from(updatedCategoriesSet);
-    console.log("usc: ", updatedSelectedCategories);
+
     return {
       ...state,
       selectedCategories: updatedSelectedCategories,
@@ -90,17 +88,15 @@ const DataReducer = (state, action) => {
   }
   if (action.type === "ADD_TO_WISHLIST") {
     if (state.wishlist.includes(action.payload)) {
-      console.log("Item is already in the wishlist");
       return state;
     }
-    console.log("updating wishlist: ", state.user);
+
     return {
       ...state,
       wishlist: [...state.wishlist, action.payload],
     };
   }
   if (action.type === "REMOVE_FROM_WISHLIST") {
-    console.log("updating wishlist: ", state.user);
     return {
       ...state,
       wishlist: state.wishlist.filter((id) => id !== action.payload),
@@ -128,7 +124,6 @@ const DataReducer = (state, action) => {
     };
   }
   if (action.type === "setSelectedProduct") {
-    // console.log("selected product id: ", action.payload, state);
     const selectedProduct = state.products.find((product) => {
       return product.id === action.payload;
     });
@@ -139,7 +134,6 @@ const DataReducer = (state, action) => {
     };
   }
   if (action.type === "userDetails") {
-    console.log("userDetails are: ", action.payload);
     return {
       ...state,
       user: action.payload,
@@ -159,7 +153,6 @@ const DataProvider = (props) => {
       async function getData() {
         const axiosData = await axios.get("/?limit=0");
         const axiosCategories = await axios.get("/categories");
-        // console.log("axios data is: ", axiosData.data.products);
         setData(axiosData.data);
         productState.data = axiosData.data;
         dispatchAction({ type: "setData", payload: productState.data });
@@ -205,9 +198,8 @@ const DataProvider = (props) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("data & ctx is refreshed: ", data.user);
+
           userDetails(data.user);
-          console.log("user details after refrshing: ", productState);
         } else {
           console.error("Failed to fetch user details");
         }
@@ -217,8 +209,6 @@ const DataProvider = (props) => {
     };
     if (window !== undefined) {
       fetchUserDetails();
-      // console.log("Context after refreshing is: ", ctx, userDetails);
-      // ctx.setUserDetails(userDetails);
     }
   }, []);
 
@@ -256,13 +246,10 @@ const DataProvider = (props) => {
       );
 
       const data = await response.json();
-      console.log("response form databae is: ", response);
+
       if (response.ok) {
-        console.log("dispatching action");
         dispatchAction({ type: "ADD_TO_WISHLIST", payload: productId });
         dispatchAction({ type: "userDetails", payload: data.user });
-        // console.log("use data: ", data.user);
-        // userDetails(data.user);
       } else {
         console.error("Failed to add to wishlist:", data.msg);
       }
@@ -273,7 +260,6 @@ const DataProvider = (props) => {
 
   const removeFromWishlist = async (userId, productId) => {
     try {
-      console.log("removing: ", userId, productId, productState.user);
       const response = await fetch(
         "https://node-auth-dk2l.onrender.com/wishlist/remove",
         {
@@ -307,15 +293,12 @@ const DataProvider = (props) => {
     dispatchAction({ type: "setSelectedProduct", payload: id });
   };
   const userDetails = (user) => {
-    console.log("User details called: ");
     dispatchAction({ type: "userDetails", payload: user });
   };
   const handleWishlist = (ev, userId, productId) => {
     if (ev.target.checked) {
-      console.log("ADdign to wishlist: ");
       addToWishlist(userId, productId);
     } else {
-      console.log("Removing form wishlist: ", userId, productId);
       removeFromWishlist(userId, productId);
     }
   };
