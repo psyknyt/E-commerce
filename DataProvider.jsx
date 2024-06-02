@@ -22,7 +22,7 @@ const defaultState = {
 
 // data Reducer
 const DataReducer = (state, action) => {
-  console.log("product list is: ", state, action.payload);
+  console.log("product list is: ", state, action);
 
   if (action.type === "pagination") {
     return {
@@ -86,23 +86,24 @@ const DataReducer = (state, action) => {
   if (action.type === "ADD_TO_CART") {
     return {
       ...state,
+    };
+  }
+  if (action.type === "ADD_TO_WISHLIST") {
+    if (state.wishlist.includes(action.payload)) {
+      console.log("Item is already in the wishlist");
+      return state;
+    }
+    console.log("updating wishlist: ", state.user);
+    return {
+      ...state,
       wishlist: [...state.wishlist, action.payload],
-      user: {
-        ...state.user,
-        wishlist: [...state.user.wishlist, action.payload],
-      },
     };
   }
   if (action.type === "REMOVE_FROM_WISHLIST") {
+    console.log("updating wishlist: ", state.user);
     return {
       ...state,
-      wishlist: [state.wishlist.filter((el) => el.id !== action.payload)],
-      user: {
-        ...state.user,
-        wishlist: [
-          state.user.wishlist.filter((el) => el.id !== action.payload),
-        ],
-      },
+      wishlist: state.wishlist.filter((id) => id !== action.payload),
     };
   }
   if (action.type === "addToCart") {
@@ -185,6 +186,41 @@ const DataProvider = (props) => {
       console.log(error);
     }
   }, []);
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return;
+      }
+      try {
+        const response = await fetch(
+          "https://node-auth-dk2l.onrender.com/userinfo",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("data & ctx is refreshed: ", data.user);
+          userDetails(data.user);
+          console.log("user details after refrshing: ", productState);
+        } else {
+          console.error("Failed to fetch user details");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+    if (window !== undefined) {
+      fetchUserDetails();
+      // console.log("Context after refreshing is: ", ctx, userDetails);
+      // ctx.setUserDetails(userDetails);
+    }
+  }, []);
 
   const pagination = (value) => {
     dispatchAction({ type: "pagination", payload: value });
@@ -203,18 +239,30 @@ const DataProvider = (props) => {
   };
   const addToWishlist = async (userId, productId) => {
     try {
-      const response = await fetch("http://localhost:3000/wishlist/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId, productId }),
-      });
+      if (productState.user.wishlist.find((item) => item === productId)) {
+        alert("item already exists in wishlist");
+        dispatchAction({ type: "REMOVE_FROM_WISHLIST", payload: productId });
+        return;
+      }
+      const response = await fetch(
+        "https://node-auth-dk2l.onrender.com/wishlist/add",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, productId }),
+        }
+      );
 
       const data = await response.json();
       console.log("response form databae is: ", response);
       if (response.ok) {
+        console.log("dispatching action");
         dispatchAction({ type: "ADD_TO_WISHLIST", payload: productId });
+        dispatchAction({ type: "userDetails", payload: data.user });
+        // console.log("use data: ", data.user);
+        // userDetails(data.user);
       } else {
         console.error("Failed to add to wishlist:", data.msg);
       }
@@ -225,18 +273,24 @@ const DataProvider = (props) => {
 
   const removeFromWishlist = async (userId, productId) => {
     try {
-      const response = await fetch("http://localhost:3000/wishlist/remove", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId, productId }),
-      });
+      console.log("removing: ", userId, productId, productState.user);
+      const response = await fetch(
+        "https://node-auth-dk2l.onrender.com/wishlist/remove",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, productId }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         dispatchAction({ type: "REMOVE_FROM_WISHLIST", payload: productId });
+        dispatchAction({ type: "userDetails", payload: data.user });
+        // userDetails(data.user);
       } else {
         console.error("Failed to remove from wishlist:", data.msg);
       }
@@ -253,7 +307,17 @@ const DataProvider = (props) => {
     dispatchAction({ type: "setSelectedProduct", payload: id });
   };
   const userDetails = (user) => {
+    console.log("User details called: ");
     dispatchAction({ type: "userDetails", payload: user });
+  };
+  const handleWishlist = (ev, userId, productId) => {
+    if (ev.target.checked) {
+      console.log("ADdign to wishlist: ");
+      addToWishlist(userId, productId);
+    } else {
+      console.log("Removing form wishlist: ", userId, productId);
+      removeFromWishlist(userId, productId);
+    }
   };
 
   const res = {
@@ -279,6 +343,7 @@ const DataProvider = (props) => {
     removeFromWishlist: removeFromWishlist,
     addToCart: addToCart,
     setUserDetails: userDetails,
+    handleWishlist: handleWishlist,
   };
 
   return (

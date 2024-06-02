@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { DataContext } from "../../DataContext";
 
 import { ProductInfoGallery } from "./ProductInfoGallery";
@@ -19,6 +19,9 @@ export default function ProductInfo() {
       </div>
     );
   }
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

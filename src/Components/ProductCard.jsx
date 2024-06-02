@@ -56,17 +56,13 @@ export default function ProductCard({ props }) {
   };
 
   const handleWishlist = (ev) => {
-    console.log("auth ctx is: ", authCtx);
+    // console.log("auth ctx is: ", authCtx);
     if (authCtx.token === null) {
       alert("you need to sign in first");
       return;
     }
-    if (ev.target.checked) {
-      console.log("user details details: ", ctx);
-      ctx.addToWishlist(ctx.user.id, props.id);
-    } else {
-      ctx.removeFromWishlist(ctx.user.id, props.id);
-    }
+    console.log("event is: ", ev.target.checked, ctx.user);
+    ctx.handleWishlist(ev, ctx.user.id, props.id);
   };
 
   return (
@@ -127,19 +123,19 @@ export default function ProductCard({ props }) {
                   type="checkbox"
                   className="absolute opacity-0 w-6 h-6"
                   id="btn"
-                  onChange={handleWishlist}
+                  onChange={(e) => handleWishlist(e)}
                 />
               </PopoverHandler>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill={
-                  ctx.wishlist.find((el) => el.id === props.id)
+                  ctx.wishlist.find((el) => el === props.id)
                     ? "#D24545"
                     : "#FCF5ED"
                 }
                 viewBox="0 0 24 24"
                 strokeWidth={
-                  ctx.wishlist.find((el) => el.id === props.id) ? 0.2 : 0.8
+                  ctx.wishlist.find((el) => el === props.id) ? 0.2 : 0.8
                 }
                 stroke="currentColor"
                 className="z-1 w-6 h-6 transition ease-in-out"

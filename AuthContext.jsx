@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { DataContext } from "./DataContext";
-
+import { useNavigate } from "react-router-dom";
 // Create AuthContext
 const AuthContext = React.createContext({
   token: "",
@@ -13,8 +13,8 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(null);
   const [logoutTimer, setLogoutTimer] = useState(null);
   const [userDetails, setDetails] = useState(null);
-
-  const userIsLoggedIn = !token;
+  // const navigate = useNavigate();
+  const userIsLoggedIn = !!token;
 
   const ctx = useContext(DataContext);
 
@@ -26,6 +26,8 @@ export const AuthContextProvider = (props) => {
     setLogoutTimer(null);
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
+    alert("Logged out successfully");
+    // navigate("/signin");
   }, [logoutTimer]);
 
   const loginHandler = (token, expirationTime) => {
@@ -59,39 +61,6 @@ export const AuthContextProvider = (props) => {
         }, remainingTime);
         setLogoutTimer(timer);
       }
-    }
-  }, []);
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        return;
-      }
-
-      try {
-        const response = await fetch("http://localhost:3000/userinfo", {
-          method: "GET",
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("data & ctx is: ", data.user, ctx);
-          setDetails(data.user);
-        } else {
-          // Handle error
-          console.error("Failed to fetch user details");
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-    if (window !== undefined) {
-      console.log("Context after refreshing is: ", ctx, userDetails);
-      ctx.setUserDetails(userDetails);
-      fetchUserDetails();
     }
   }, []);
 

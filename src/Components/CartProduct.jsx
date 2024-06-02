@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { DataContext } from "../../DataContext";
+import AuthContext from "../../AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -21,6 +22,7 @@ import { Link, Navigate } from "react-router-dom";
 export default function CartProduct({ props, index }) {
   const navigate = useNavigate();
   const ctx = useContext(DataContext);
+  const authCtx = useContext(AuthContext);
   const cart = [...ctx?.cart];
   const price = cart[index]?.price * 84;
 
@@ -62,7 +64,15 @@ export default function CartProduct({ props, index }) {
       navigate("/productInfo");
     }
   };
-
+  const handleWishlist = (ev) => {
+    // console.log("auth ctx is: ", authCtx);
+    if (authCtx.token === null) {
+      alert("you need to sign in first");
+      return;
+    }
+    console.log("event is: ", ev.target);
+    ctx.handleWishlist(ev, ctx.user.id, props.id);
+  };
   return (
     <Card
       onClick={handleSelectedProject}
@@ -99,20 +109,20 @@ export default function CartProduct({ props, index }) {
                     type="checkbox"
                     className="absolute opacity-0 w-6 h-6"
                     id="btn"
-                    onChange={(ev) => ctx.handleWishlist(ev, props.id)}
+                    onChange={(ev) => handleWishlist(ev, props.id)}
                   />
                 </Tooltip>
               </PopoverHandler>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill={
-                  ctx.wishlist.find((el) => el.id === props.id)
+                  ctx.wishlist.find((el) => el === props.id)
                     ? "#D24545"
                     : "#FCF5ED"
                 }
                 viewBox="0 0 24 24"
                 strokeWidth={
-                  ctx.wishlist.find((el) => el.id === props.id) ? 0.2 : 0.8
+                  ctx.wishlist.find((el) => el === props.id) ? 0.2 : 0.8
                 }
                 stroke="currentColor"
                 className="z-1 w-6 h-6 transition ease-in-out"

@@ -21,13 +21,16 @@ const SignIn = () => {
 
     try {
       console.log("initiating request");
-      const response = await fetch("http://localhost:3000/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginPayload),
-      });
+      const response = await fetch(
+        "https://node-auth-dk2l.onrender.com/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginPayload),
+        }
+      );
       console.log("request made waiting for response");
       if (!response.ok) {
         throw new Error("Failed to login!");
@@ -37,6 +40,7 @@ const SignIn = () => {
       const expirationTime = new Date(new Date().getTime() + 3600 * 1000); // 1 hour expiration
       console.log("received data is: ", data);
       authCtx.login(data.token, expirationTime.toISOString());
+      console.log("User data on signin: ", data.user);
       ctx.setUserDetails(data.user);
       navigate("/cart");
     } catch (error) {

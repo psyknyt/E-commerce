@@ -23,4 +23,5 @@ export const DataContext = React.createContext({
   removeFromWishlist: (userId, productId) => {},
   addToCart: (id) => {},
   setUserDetails: (user) => {},
+  handleWishlist: (ev, userId, productId) => {},
 });

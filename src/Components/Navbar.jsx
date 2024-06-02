@@ -1,15 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import DrawerCategories from "./Drawer";
 import "../App.css";
 import { DataContext } from "../../DataContext";
-
+import AuthContext from "../../AuthContext";
 import logo from "../assets/logo.png";
 
 import { CiPower } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
+import { AiOutlineJava } from "react-icons/ai";
 
 const navbarProps = {
   Logo: { type: "img", text: "LOGO GOES HERE !", img: "../assets/logo.png" },
@@ -83,11 +84,18 @@ const MenuToggleButton = ({ show, setShow }) => {
 
 export default function Nav() {
   const ctx = useContext(DataContext);
+  const authCtx = useContext(AuthContext);
   const [show, setShow] = React.useState(true);
   const [hover, setHover] = React.useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isDropDownVisible, setIsDropdownVisible] = useState(false);
-
+  const navigate = useNavigate();
+  const handleClick = (e) => {
+    if (authCtx.token === "null") {
+      e.preventDefault(); // Prevent the default link behavior
+      alert("Please log in first");
+    }
+  };
   const toggleDropown = () => {
     console.log("mouse-event");
     setIsDropdownVisible(!isDropDownVisible);
@@ -103,6 +111,13 @@ export default function Nav() {
     console.log("check drawer: ", ctx);
     ctx.setDrawerVisib(true);
   };
+
+  useEffect(() => {
+    if (authCtx.token === "null") {
+      navigate("/signin");
+    }
+    console.log("auth context is: ", authCtx);
+  }, [authCtx.token, navigate]);
   return (
     <div
       className="nav-wrapper w-full h-16 bg-white flex justify-between items-center"
@@ -206,7 +221,8 @@ export default function Nav() {
             </div>
           </Link>
           {/* TODO changed the route to / on account */}
-          <Link to="/userprofile">
+
+          <Link to={"/userprofile"} onClick={handleClick}>
             <div className="navlink relative h-full">
               <div
                 className="relative flex group items-center gap-1  h-full "
@@ -235,11 +251,16 @@ export default function Nav() {
                 {isDropDownVisible && (
                   <div className="absolute top-full left-0 bg-white  shadow-md rounded  w-[200%] py-3">
                     <ul className=" justify-start flex flex-col">
-                      <li className="p-2 hover:bg-gray-100 flex gap-2 items-center">
-                        <CgProfile className="w-4 h-4 text-blue-[#FC4100]" />
-                        Profile
-                      </li>
-                      <li className="p-2 hover:bg-gray-100 flex gap-2 items-center">
+                      <Link to="/userprofile">
+                        <li className="p-2 hover:bg-gray-100 flex gap-2 items-center">
+                          <CgProfile className="w-4 h-4 text-blue-[#FC4100]" />
+                          Profile
+                        </li>
+                      </Link>
+                      <li
+                        className="p-2 hover:bg-gray-100 flex gap-2 items-center"
+                        onClick={() => authCtx.logout()}
+                      >
                         <CiPower className="w-4 h-4" />
                         Log out
                       </li>
@@ -250,6 +271,7 @@ export default function Nav() {
               </div>
             </div>
           </Link>
+
           <Link to="/categories">
             <div
               className="group flex items-center navlink group relative h-full"
@@ -267,18 +289,22 @@ export default function Nav() {
               </div>
             </div>
           </Link>
-          <Link to="/signup">
-            <div className="group flex items-center navlink group relative h-full">
-              <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-3000 group-hover:border-black"></div>
-              <p>Signup</p>
-            </div>
-          </Link>
-          <Link to="/signin">
-            <div className="group flex items-center navlink group relative h-full">
-              <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-3000 group-hover:border-black"></div>
-              <p>Signin</p>
-            </div>
-          </Link>
+          {!authCtx.token && (
+            <Link to="/signup">
+              <div className="group flex items-center navlink group relative h-full">
+                <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-3000 group-hover:border-black"></div>
+                <p>Signup</p>
+              </div>
+            </Link>
+          )}
+          {!authCtx.token && (
+            <Link to="/signin">
+              <div className="group flex items-center navlink group relative h-full">
+                <div className="absolute inset-x-0 bottom-[15px] border-b-2 border-transparent transition-colors duration-3000 group-hover:border-black"></div>
+                <p>Signin</p>
+              </div>
+            </Link>
+          )}
         </ul>
       </div>
       <MenuToggleButton show={show} setShow={setShow} />
