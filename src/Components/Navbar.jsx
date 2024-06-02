@@ -189,7 +189,7 @@ export default function Nav() {
               </a>
             </li>
           </Link>
-          {authCtx.token && (
+          {!authCtx.token && (
             <Link to="/signup">
               <li
                 className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex"
@@ -199,7 +199,7 @@ export default function Nav() {
               </li>
             </Link>
           )}
-          {authCtx.token && (
+          {!authCtx.token && (
             <Link to="/signin">
               <li
                 className="navlink h-16 md:h-full bg-blue-500 text-white  text-xl justify-center items-center flex"
