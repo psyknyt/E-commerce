@@ -85,7 +85,7 @@ const MenuToggleButton = ({ show, setShow }) => {
 export default function Nav() {
   const ctx = useContext(DataContext);
   const authCtx = useContext(AuthContext);
-  const [show, setShow] = React.useState(true);
+  const [show, setShow] = React.useState(false);
   const [hover, setHover] = React.useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isDropDownVisible, setIsDropdownVisible] = useState(false);
