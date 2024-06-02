@@ -10,7 +10,7 @@ export function ProductInfoGallery({ props, product }) {
   }));
 
   const [active, setActive] = React.useState(props[0]);
-  // console.log("inside product info gallery: ", data);
+
   return (
     // div containing both image and buttons
     <div className="h-screen hidden lg:flex flex-col w-[60%]">

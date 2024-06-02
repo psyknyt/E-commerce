@@ -65,12 +65,11 @@ export default function CartProduct({ props, index }) {
     }
   };
   const handleWishlist = (ev) => {
-    // console.log("auth ctx is: ", authCtx);
     if (authCtx.token === null) {
       alert("you need to sign in first");
       return;
     }
-    console.log("event is: ", ev.target);
+
     ctx.handleWishlist(ev, ctx.user.id, props.id);
   };
   return (

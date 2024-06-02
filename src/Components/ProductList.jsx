@@ -7,13 +7,10 @@ import { Spinner, Button } from "@material-tailwind/react";
 const ProductList = memo(({}) => {
   const [products, setProducts] = useState([]);
   const ctx = useContext(DataContext);
-  // console.log("product data is: ", ctx);
 
   useEffect(() => {
     if (ctx?.data?.products) {
       setProducts(ctx.data.products); // Ensure products is an array
-    } else {
-      console.log("No product data received");
     }
     // setCategories(ctx.categories);
   }, [ctx.data]);

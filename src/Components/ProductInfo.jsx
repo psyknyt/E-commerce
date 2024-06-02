@@ -11,7 +11,7 @@ export default function ProductInfo() {
   const ctx = useContext(DataContext);
 
   const product = ctx.selectedProduct;
-  // console.log("selected product is: ", product);
+
   if (product === undefined) {
     return (
       <div className="h-[80vh] my-20 pt-16 text-center text-red-500 flex justify-center content-center items-center">

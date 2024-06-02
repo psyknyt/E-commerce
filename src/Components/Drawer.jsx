@@ -20,11 +20,6 @@ export default function DrawerCategories({ text }) {
 
   const closeDrawer = () => ctx.setDrawerVisib(false);
 
-  // console.log(
-  //   ctx.selectedCategories.includes(props.category) ? true : false,
-  //   props.category
-  // );
-
   return (
     <div className="flex items-center">
       {/* <button onClick={openDrawer}>{text}</button> */}

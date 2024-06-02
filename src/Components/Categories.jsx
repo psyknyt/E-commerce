@@ -26,7 +26,6 @@ export default function Categories() {
   }, [ctx.selectedCategories, navigate]);
 
   if (ctx.selectedCategories?.length > 0) {
-    console.log("show products...: ", ctx.selectedCategories.length);
     content = (
       <>
         <div className="flex justify-center text-4xl font-bold text-white py-5 mx-2 sm:mx-0">

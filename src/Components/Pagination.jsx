@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 const Pagination = memo(() => {
   const ctx = useContext(DataContext);
-  // console.log(ctx);
   // const [active, setActive] = useState(1);
   // ctx.pagination(active);
 
@@ -23,7 +22,6 @@ const Pagination = memo(() => {
       return;
     }
     // setActive(active + 1);
-    console.log("active: ", ctx.pageNumber);
     ctx.nextPage();
   };
 

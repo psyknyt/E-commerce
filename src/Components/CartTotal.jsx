@@ -13,12 +13,8 @@ export default function CartTotal() {
     price += product.price;
     total += product.amount;
     discount += product.discount;
-    //   console.log("product: ", product);
   }
   ctx.total = total;
-  // console.log("price", price, total, discount);
-
-  console.log("price", price, total, discount);
 
   price *= 84; // Convert $ to rupee
 
@@ -39,8 +35,6 @@ export default function CartTotal() {
     style: "currency",
     currency: "INR",
   });
-
-  //   console.log("price", Price, Total, Discount);
 
   return (
     <div className="flex flex-col gap-4 bg-white  w-[90%]  sm:max-w-[48rem] lg:w-[30%] h-[300px] px-6 rounded-lg lg:mr-5 mx-auto">

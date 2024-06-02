@@ -56,12 +56,10 @@ export default function ProductCard({ props }) {
   };
 
   const handleWishlist = (ev) => {
-    // console.log("auth ctx is: ", authCtx);
     if (authCtx.token === null) {
       alert("you need to sign in first");
       return;
     }
-    console.log("event is: ", ev.target.checked, ctx.user);
     ctx.handleWishlist(ev, ctx.user.id, props.id);
   };
 

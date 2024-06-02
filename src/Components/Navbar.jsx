@@ -97,7 +97,6 @@ export default function Nav() {
     }
   };
   const toggleDropown = () => {
-    console.log("mouse-event");
     setIsDropdownVisible(!isDropDownVisible);
   };
   const handleDropdown = () => {
@@ -108,7 +107,6 @@ export default function Nav() {
       top: 0,
       behavior: "smooth",
     });
-    console.log("check drawer: ", ctx);
     ctx.setDrawerVisib(true);
   };
 
@@ -116,7 +114,6 @@ export default function Nav() {
     if (authCtx.token === "null") {
       navigate("/signin");
     }
-    console.log("auth context is: ", authCtx);
   }, [authCtx.token, navigate]);
   return (
     <div

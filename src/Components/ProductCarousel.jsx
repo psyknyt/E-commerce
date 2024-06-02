@@ -5,7 +5,6 @@ import { Carousel } from "@material-tailwind/react";
 
 export default function ProductCarousel({ props, product }) {
   const ctx = useContext(DataContext);
-  // console.log("props: ", props, product);
 
   return (
     <div className="flex lg:hidden flex-col overflow-hidden ">
