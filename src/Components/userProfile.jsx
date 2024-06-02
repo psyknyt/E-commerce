@@ -30,7 +30,7 @@ function UserProfile() {
 
       {authCtx.token && (
         <div className="mt-[10rem] flex flex-col justify-center items-center">
-          <div className="w-md md:w-[50%] mx-auto p-6 bg-white rounded-lg shadow-md text-center">
+          <div className="w-full sm:w-[75%] md:w-[50%] mx-auto p-6 bg-white rounded-lg shadow-md text-center">
             <div className="text-gray-700 mb-2 flex w-[50%] text-left mx-auto place-content-start">
               <span className="font-bold">Id:&nbsp;</span>
               <span className="font-light">{id}</span>
@@ -69,11 +69,11 @@ function UserProfile() {
             </div>
 
             <div
-              className="text-gray-700 mb-2 flex w-[50%] text-left mx-auto place-content-start"
+              className="mt-4 text-gray-700 mb-2 flex w-[50%] text-left mx-auto place-content-start items-center gap-1"
               onClick={() => authCtx.logout()}
             >
               <CiPower className="w-4 h-4" />
-              Log out
+              <p>Log out</p>
             </div>
           </div>
         </div>
